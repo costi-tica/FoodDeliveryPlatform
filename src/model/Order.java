@@ -8,21 +8,29 @@ import java.util.List;
 
 public class Order {
     private final int id;
-    private final double price;
-    private final Courier courier;
-    private final Restaurant restaurant;
     private final Client client;
+    private final Restaurant restaurant;
+    private final Courier courier;
     private List<Product> products;
+    private final double totalPrice;
     private final int estimatedTime; //minutes
 
-    public Order(int id, double price, Courier courier, Restaurant restaurant, Client client, List<Product> products) {
+    public Order(int id, Client client, Restaurant restaurant, Courier courier, List<Product> products) {
         this.id = id;
-        this.price = price;
         this.courier = courier;
         this.restaurant = restaurant;
         this.client = client;
         this.products = products;
+        this.totalPrice = calcPrice();
         this.estimatedTime = calcEstimatedTime();
+    }
+
+    public double calcPrice(){
+        double sum = 0;
+        for (Product prod : products){
+            sum += prod.getPrice();
+        }
+        return sum;
     }
 
     public int calcEstimatedTime(){

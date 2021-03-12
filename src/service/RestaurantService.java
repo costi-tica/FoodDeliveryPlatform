@@ -53,7 +53,7 @@ public class RestaurantService {
         scanner.nextLine();
         String ingredients = scanner.nextLine();
 
-        Dish dish = new Dish(dishesMenu.getNextProdId(), name, category,
+        Dish dish = new Dish(res.getNextProdId(), name, category,
                              price, quantity, ingredients.split("/"));
         addDish(res, dish);
     }
@@ -79,7 +79,7 @@ public class RestaurantService {
         System.out.println("Cantitatea per sticla/pahar: ");
         int quantity = scanner.nextInt();
 
-        Drink drink = new Drink(drinksMenu.getNextProdId(),name, category, price, quantity);
+        Drink drink = new Drink(res.getNextProdId(),name, category, price, quantity);
         addDrink(res, drink);
     }
 //  ADD FOOD CATEGORY TO MENU

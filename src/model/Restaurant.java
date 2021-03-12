@@ -13,6 +13,7 @@ public class Restaurant {
     private List<Review> reviews;
     private DishesMenu dishesMenu;
     private DrinksMenu drinksMenu;
+    private int nextProdId;
 
     public Restaurant(int id, String name){
         this.id = id;
@@ -28,6 +29,10 @@ public class Restaurant {
         this.reviews = reviews;
         this.dishesMenu = dishesMenu;
         this.drinksMenu = drinksMenu;
+    }
+
+    public int getNextProdId() {
+        return nextProdId++;
     }
 
     public double calcRating(){
