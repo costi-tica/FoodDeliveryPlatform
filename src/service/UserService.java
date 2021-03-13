@@ -22,7 +22,7 @@ public class UserService {
     public void addReview(Courier courier, Client client){
         Review review = new Review();
         review.setFields(scanner);
-        review.setUserId(client.getId());
+        review.setClient(client);
 
         courier.getReviews().add(review);
     }
@@ -44,7 +44,7 @@ public class UserService {
         List<Review> reviews = courier.getReviews();
 
         for (Review r : reviews){
-            if (r.getUserId() == client.getId()){
+            if (r.getClient().getId() == client.getId()){
                 System.out.println("Current review: " + r.toString() + '\n');
                 r.updateFields(scanner);
                 break;
@@ -83,7 +83,7 @@ public class UserService {
         List<Review> reviews = courier.getReviews();
         Review toDelete = null;
         for (Review r : reviews){
-            if (r.getUserId() == client.getId()){
+            if (r.getClient().getId() == client.getId()){
                 toDelete = r;
                 break;
             }

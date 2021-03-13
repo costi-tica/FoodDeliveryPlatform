@@ -1,47 +1,29 @@
 package main;
 
-import model.Address;
-import model.Review;
 import model.Restaurant;
-import model.menus.DishesMenu;
-import model.menus.DrinksMenu;
-import model.products.Dish;
-import model.products.Drink;
-import service.RestaurantService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Address address = new Address("Craiova", "Doljului", 5, "");
-        List<Review> reviews = new ArrayList<>();
+        Application app = new Application();
 
-        List<String> dishCategs = new ArrayList<String>();
-        dishCategs.add("ciorbe");
-        dishCategs.add("desert");
-        List<Dish> dishes = new ArrayList<Dish>();
-        DishesMenu dishMenu = new DishesMenu(dishCategs, dishes);
-
-        List<String> drinkCategs = new ArrayList<String>();
-        drinkCategs.add("Vin");
-        drinkCategs.add("Suc");
-        List<Drink> drinks = new ArrayList<Drink>();
-        DrinksMenu drinkMenu = new DrinksMenu(drinkCategs, drinks);
-
-        Restaurant res = new Restaurant(0, "Dunarea", address, reviews, dishMenu, drinkMenu);
-
-        System.out.println(res);
-
-        System.out.println("*************************");
-
-        RestaurantService rs = new RestaurantService();
-        rs.addDishCategory(res);
-        rs.addDishCategory(res);
-        rs.addDrinkCategory(res);
-
-        System.out.println(res);
-
-
+        System.out.println("Adauga client");
+        app.addClient();
+        System.out.println("Adauga curier");
+        app.addCourier();
+        System.out.println("Adauga restaurant");
+        app.addRestaurant();
+        Restaurant resBristo = app.getRestaurantByName("Bristo");
+        System.out.println("Adauga mancare: ");
+        app.restaurantService.addDish(resBristo);
+        app.showRestaurants();
+//        resService.addDrink(resBristo);
+//        app.showRestaurants();
+//        resService.addReview(resBristo, app.getClient("Costi Tica"));
+//        resService.addReview(resBristo, app.getClient("Costi Tica"));
+//        System.out.println(resBristo + "\n" + resBristo.getReviews().get(0) + '\n' + resBristo.getReviews().get(1));
+        System.out.println("Adauga comanda: ");
+        app.addOrder();
+        System.out.println("Orders: \n");
+        app.showOrders();
     }
 }

@@ -31,6 +31,7 @@ public class Address {
         this.street = scanner.nextLine();
         System.out.println("Number: ");
         this.number = scanner.nextInt();
+        scanner.nextLine();
         System.out.println("Additional info: ");
         this.additionalInfo = scanner.nextLine();
     }
@@ -49,6 +50,7 @@ public class Address {
                 case "number":
                     System.out.println("New number: ");
                     this.number = scanner.nextInt();
+                    scanner.nextLine();
                     break;
                 case "additional info":
                     System.out.println("New additional info: ");

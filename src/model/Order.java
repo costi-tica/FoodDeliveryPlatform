@@ -25,6 +25,16 @@ public class Order {
         this.estimatedTime = calcEstimatedTime();
     }
 
+    @Override
+    public String toString(){
+        return "Order Id: " + id + '\n'+
+                "Client: " + client.toString() + "\n\n" +
+                "Restaurant: " + restaurant.toString() + "\n\n"+
+                "Courier: " + courier.toString() + "\n\n" +
+                "Total price: " + totalPrice + '\n' +
+                "Estimated time: " + estimatedTime;
+    }
+
     public double calcPrice(){
         double sum = 0;
         for (Product prod : products){

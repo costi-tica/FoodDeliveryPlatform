@@ -1,8 +1,5 @@
 package model;
 
-import model.menus.DrinksMenu;
-import model.menus.DishesMenu;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,49 +7,45 @@ public class Restaurant {
     private final int id;
     private String name;
     private Address address;
+    private Menu menu;
     private List<Review> reviews;
-    private DishesMenu dishesMenu;
-    private DrinksMenu drinksMenu;
     private int nextProdId;
 
-    public Restaurant(int id, String name){
+    public Restaurant(int id, String name, Address address){
         this.id = id;
         this.name = name;
-        this.reviews = new ArrayList<Review>();
-        this.dishesMenu = new DishesMenu();
-        this.drinksMenu = new DrinksMenu();
+        this.address = address;
+        this.menu = new Menu();
+        this.reviews = new ArrayList<>();
     }
-    public Restaurant(int id, String name, Address address, List<Review> reviews, DishesMenu dishesMenu, DrinksMenu drinksMenu) {
+    public Restaurant(int id, String name, Address address, List<Review> reviews, Menu menu) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.reviews = reviews;
-        this.dishesMenu = dishesMenu;
-        this.drinksMenu = drinksMenu;
+        this.menu = menu;
     }
 
     public int getNextProdId() {
         return nextProdId++;
     }
 
-    public double calcRating(){
+    @Override
+    public String toString(){
+        double rating = getRating();
+        String ratingMessage = rating == 0 ? "No reviews" : Double.toString(rating);
+        return  "Restaurant Id: " + id + '\n' +
+                "Name: " + name + "\n\n" +
+                "Address: \n" + address + "\n\n"+
+                "Rating: " + ratingMessage;
+    }
+
+    public double getRating(){
         int s = 0;
         for (Review r : reviews){
             s += r.getNumOfStars();
         }
         return reviews.size() >0 ? s * 1.0 / reviews.size() : 0;
-    }
-
-    @Override
-    public String toString(){
-        double rating = calcRating();
-        String ratingMessage = rating == 0 ? "No reviews" : Double.toString(rating);
-        return  "Id: " + id + '\n' +
-                "Name: " + name + "\n\n" +
-                "Address: \n" + address + "\n\n"+
-                "Rating: " + ratingMessage  + "\n\n" +
-                "Food menu: \n" + dishesMenu + "\n" +
-                "Drinks menu: \n" + drinksMenu;
     }
 
     public String getName() {
@@ -75,23 +68,7 @@ public class Restaurant {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    public DishesMenu getDishesMenu() {
-        return dishesMenu;
-    }
-
-    public void setDishesMenu(DishesMenu dishesMenu) {
-        this.dishesMenu = dishesMenu;
-    }
-
-    public DrinksMenu getDrinksMenu() {
-        return drinksMenu;
-    }
-
-    public void setDrinksMenu(DrinksMenu drinksMenu) {
-        this.drinksMenu = drinksMenu;
+    public Menu getMenu() {
+        return menu;
     }
 }

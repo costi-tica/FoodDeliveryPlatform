@@ -1,16 +1,14 @@
 package model.products;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class Dish extends Product {
     private String[] ingredients;
 
-    public Dish(int id, String name, String category, double price, int quantity, String[] ingredients) {
-        super(id, name, category, price, quantity, "g");
+    public Dish(int id, String name, double price, int quantity, String[] ingredients) {
+        super(id, name, price, quantity, "g");
         this.ingredients = ingredients;
     }
 

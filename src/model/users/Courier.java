@@ -10,6 +10,7 @@ public class Courier extends User{
 
     public Courier(int id){
         super(id);
+        this.reviews = new ArrayList<Review>();
     }
     public Courier(int id, String name, String phoneNumber) {
         super(id, name, phoneNumber);
