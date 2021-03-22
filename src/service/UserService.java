@@ -9,14 +9,13 @@ import model.users.User;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserService {
+public final class UserService {
     private final Scanner scanner;
 
     public UserService(){
         scanner = new Scanner(System.in);
     }
 
-//  ADD
 
 //  ADD REVIEW FOR COURIER
     public void addReview(Courier courier, Client client){
@@ -36,8 +35,6 @@ public class UserService {
 
         client.setAddress(address);
     }
-
-//  EDIT
 
 //  EDIT REVIEW (COURIER)
     public void editReview(Courier courier, Client client){
@@ -75,8 +72,6 @@ public class UserService {
         System.out.println("New phone number: ");
         user.setPhoneNumber(scanner.nextLine());
     }
-
-//  DELETE
 
 //  DELETE REVIEW (COURIER)
     public void deleteReview(Courier courier, Client client){

@@ -5,7 +5,7 @@ import model.users.Client;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Review {
+public final class Review {
     private int numOfStars;
     private String message;
     private Client client;

@@ -12,6 +12,7 @@ public class Drink extends Product {
         return super.toString();
     }
 
+    @Override
     public void updateFields(Scanner scanner, String[] fields) {
         super.updateFields(scanner, fields);
     }

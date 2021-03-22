@@ -6,7 +6,7 @@ import model.users.Courier;
 
 import java.util.List;
 
-public class Order {
+public final class Order {
     private final int id;
     private final Client client;
     private final Restaurant restaurant;

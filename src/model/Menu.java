@@ -6,7 +6,7 @@ import model.products.Drink;
 import java.util.HashMap;
 import java.util.List;
 
-public class Menu {
+public final class Menu {
     private HashMap<String, List<Dish>> dishes;
     private HashMap<String, List<Drink>> drinks;
 

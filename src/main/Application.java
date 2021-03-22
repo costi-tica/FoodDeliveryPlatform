@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class Application {
+public final class Application {
    private List<Client> clients;
    private List<Courier> couriers;
    private List<Restaurant> restaurants;
@@ -24,18 +24,27 @@ public class Application {
    UserService userService;
 
    public Application(){
-      this.clients = new ArrayList<Client>();
-      this.couriers = new ArrayList<Courier>();
-      this.restaurants = new ArrayList<Restaurant>();
-      this.orders = new ArrayList<Order>();
+      this.clients = new ArrayList<>();
+      this.couriers = new ArrayList<>();
+      this.restaurants = new ArrayList<>();
+      this.orders = new ArrayList<>();
       this.restaurantService = new RestaurantService();
       this.userService = new UserService();
+   }
+
+// ORDER OPTIONS MENU
+   private void orderOptionsMenu(String forName){
+      System.out.println(forName + " does not exist. Choose:");
+      System.out.println("\t1) Type the name again");
+      System.out.println("\t2) Show all " + forName + 's');
+      System.out.println("\t3) Exit");
+      System.out.println("Option: ");
    }
 
 // GET
    public Restaurant getRestaurantByName(String name){
       for (Restaurant r : restaurants){
-         if (r.getName().equals(name)){
+         if (r.getName().equalsIgnoreCase(name)){
             return r;
          }
       }
@@ -43,7 +52,15 @@ public class Application {
    }
    public Client getClientByName(String name){
       for (Client c : clients){
-         if (c.getName().equals(name)){
+         if (c.getName().equalsIgnoreCase(name)){
+            return c;
+         }
+      }
+      return null;
+   }
+   public Courier getCourierByName(String name){
+      for (Courier c : couriers){
+         if (c.getName().equalsIgnoreCase(name)){
             return c;
          }
       }
@@ -78,7 +95,7 @@ public class Application {
 
 // ADD
 
-//   ADD CLIENT
+// ADD CLIENT
    public void addClient(){
       Scanner scanner = new Scanner(System.in);
       Client client = new Client(nextClientId++);
@@ -119,13 +136,7 @@ public class Application {
          switch (option){
             case 1:
                System.out.println("Client: (name)");
-               clientName = scanner.nextLine();
-               for (Client client : clients) {
-                  if (client.getName().equals(clientName)) {
-                     clientFound = client;
-                     break;
-                  }
-               }
+               clientFound = getClientByName(scanner.nextLine());
                break;
             case 2:
                showClients();
@@ -134,11 +145,7 @@ public class Application {
                return;
          }
          if (clientFound == null){
-            System.out.println("Client does not exist. Choose:");
-            System.out.println("\t1) Type the name again");
-            System.out.println("\t2) Show all clients");
-            System.out.println("\t3) Exit");
-            System.out.println("Optiune: ");
+            orderOptionsMenu("Client");
             option = scanner.nextInt();
             scanner.nextLine();
          }
@@ -152,13 +159,7 @@ public class Application {
          switch (option){
             case 1:
                System.out.println("Restaurant: (name)");
-               resName = scanner.nextLine();
-               for (Restaurant r : restaurants) {
-                  if (r.getName().equals(resName)) {
-                     resFound = r;
-                     break;
-                  }
-               }
+               resFound = getRestaurantByName(scanner.nextLine());
                break;
             case 2:
                showRestaurants();
@@ -167,11 +168,7 @@ public class Application {
                return;
          }
          if (resFound == null){
-            System.out.println("Restaurant does not exist. Choose:");
-            System.out.println("\t1) Type the name again");
-            System.out.println("\t2) Show all restaurants");
-            System.out.println("\t3) Exit");
-            System.out.println("Optiune: ");
+            orderOptionsMenu("Restaurant");
             option = scanner.nextInt();
             scanner.nextLine();
          }
@@ -184,13 +181,7 @@ public class Application {
          switch (option){
             case 1:
                System.out.println("Courier: (name)");
-               courierName = scanner.nextLine();
-               for (Courier c : couriers) {
-                  if (c.getName().equals(courierName)) {
-                     courierFound = c;
-                     break;
-                  }
-               }
+               courierFound = getCourierByName(scanner.nextLine());
                break;
             case 2:
                showCouriers();
@@ -199,18 +190,14 @@ public class Application {
                return;
          }
          if (courierFound == null){
-            System.out.println("Courier does not exist. Choose:");
-            System.out.println("\t1) Type the name again");
-            System.out.println("\t2) Show all couriers");
-            System.out.println("\t3) Exit");
-            System.out.println("Optiune: ");
+            orderOptionsMenu("Courier");
             option = scanner.nextInt();
             scanner.nextLine();
          }
       }
 
       System.out.println("Product Ids: ('/' between ids)");
-      List<Product> prods = new ArrayList<Product>();
+      List<Product> prods = new ArrayList<>();
       for (String id : scanner.nextLine().split("/")){
          Product prod = restaurantService.getProductById(resFound, Integer.parseInt(id));
          if (prod != null) prods.add(prod);

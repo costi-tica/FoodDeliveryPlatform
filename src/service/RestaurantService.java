@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class RestaurantService {
+public final class RestaurantService {
     private final Scanner scanner;
 
     public RestaurantService(){
@@ -44,8 +44,6 @@ public class RestaurantService {
     public void showMenu(Restaurant res){
         System.out.println("MENU: \n\n" + res.getMenu().toString());
     }
-
-//  ADD
 
 //  ADD REVIEW FOR RESTAURANT
     public void addReview(Restaurant res, Review review){
@@ -145,8 +143,6 @@ public class RestaurantService {
         res.setAddress(address);
     }
 
-//  EDIT
-
 //  EDIT RATING
     public void editReview(Restaurant res, Client client){
         List<Review> reviews = res.getReviews();
@@ -172,7 +168,6 @@ public class RestaurantService {
 
         toEdit.updateFields(scanner, scanner.nextLine().split("/"));
     }
-
 //  EDIT NAME
     public void editName(Restaurant res, String name){
         res.setName(name);
@@ -192,8 +187,6 @@ public class RestaurantService {
 
         address.updateFields(scanner, scanner.nextLine().split("/"));
     }
-
-//  DELETE
 
 //  DELETE REVIEW
     public void deleteReview(Restaurant res, Client client){

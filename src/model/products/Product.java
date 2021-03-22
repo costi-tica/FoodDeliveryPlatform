@@ -27,20 +27,20 @@ public abstract class Product {
 
     public void updateFields(Scanner scanner, String[] fields){
         for (String field : fields){
-            switch (field.toLowerCase()){
-                case "name":
+            switch (field.toLowerCase()) {
+                case "name" -> {
                     System.out.println("New name: ");
                     this.name = scanner.nextLine();
-                    break;
-                case "price":
+                }
+                case "price" -> {
                     System.out.println("New price: ");
                     this.price = scanner.nextDouble();
-                    break;
-                case "quantity":
+                }
+                case "quantity" -> {
                     System.out.println("New quantity/serving: ");
                     this.quantity = scanner.nextInt();
                     scanner.nextLine();
-                    break;
+                }
             }
         }
     }

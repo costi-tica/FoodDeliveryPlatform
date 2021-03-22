@@ -18,10 +18,11 @@ public class Dish extends Product {
                 "Ingredients: " + Arrays.toString(ingredients);
     }
 
+    @Override
     public void updateFields(Scanner scanner, String[] fields) {
         super.updateFields(scanner, fields);
         for(String field : fields){
-            if (field.equals("ingredients")){
+            if (field.equalsIgnoreCase("ingredients")){
                 System.out.println("New ingredients: ('/' between ingredients)");
                 this.ingredients = scanner.nextLine().split("/");
                 break;

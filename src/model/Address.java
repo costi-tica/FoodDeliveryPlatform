@@ -2,7 +2,7 @@ package model;
 
 import java.util.Scanner;
 
-public class Address {
+public final class Address {
     private String city;
     private String street;
     private int number;

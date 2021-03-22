@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Restaurant {
+public final class Restaurant {
     private final int id;
     private String name;
     private Address address;

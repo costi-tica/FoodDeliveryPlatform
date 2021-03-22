@@ -15,6 +15,7 @@ public class Client extends User{
         this.address = address;
     }
 
+    @Override
     public void setFields(Scanner scanner){
         super.setFields(scanner);
         System.out.println("Address:\n");
