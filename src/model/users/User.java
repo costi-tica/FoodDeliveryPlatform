@@ -1,7 +1,5 @@
 package model.users;
 
-import model.Address;
-
 import java.util.Scanner;
 
 public abstract class User {
@@ -9,6 +7,7 @@ public abstract class User {
     protected String name;
     protected String phoneNumber;
 
+    public User(){}
     public User(int id){
         this.id = id;
     }

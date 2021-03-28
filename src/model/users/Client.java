@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Client extends User{
     private Address address;
 
+    public Client(){}
     public Client(int id){
         super(id);
     }

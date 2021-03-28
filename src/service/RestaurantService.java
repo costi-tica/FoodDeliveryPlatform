@@ -44,6 +44,12 @@ public final class RestaurantService {
     public void showMenu(Restaurant res){
         System.out.println("MENU: \n\n" + res.getMenu().toString());
     }
+    public void showReviews(Restaurant res) {
+        for (Review r : res.getReviews()){
+            System.out.println(r);
+            System.out.println("________________");
+        }
+    }
 
 //  ADD REVIEW FOR RESTAURANT
     public void addReview(Restaurant res, Review review){

@@ -16,6 +16,13 @@ public final class UserService {
         scanner = new Scanner(System.in);
     }
 
+//  SHOW REVIEWS (COURIER)
+    public void showReviews(Courier courier){
+        for (Review r : courier.getReviews()){
+            System.out.println(r);
+            System.out.println("_______________________");
+        }
+    }
 
 //  ADD REVIEW FOR COURIER
     public void addReview(Courier courier, Client client){

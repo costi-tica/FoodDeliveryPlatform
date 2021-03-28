@@ -11,6 +11,7 @@ public final class Restaurant {
     private List<Review> reviews;
     private int nextProdId;
 
+    public Restaurant() { this.id = -1; }
     public Restaurant(int id, String name, Address address){
         this.id = id;
         this.name = name;
@@ -45,7 +46,7 @@ public final class Restaurant {
         for (Review r : reviews){
             s += r.getNumOfStars();
         }
-        return reviews.size() >0 ? s * 1.0 / reviews.size() : 0;
+        return reviews.size() > 0 ? s * 1.0 / reviews.size() : 0;
     }
 
     public String getName() {
