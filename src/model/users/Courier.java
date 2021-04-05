@@ -6,36 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Courier extends User{
-    private List<Review> reviews;
+    private List<String> transportMeans;
 
     public Courier(){}
     public Courier(int id){
         super(id);
-        this.reviews = new ArrayList<Review>();
     }
-    public Courier(int id, String name, String phoneNumber) {
+    public Courier(int id, String name, String phoneNumber, List<String> transportMeans) {
         super(id, name, phoneNumber);
-        this.reviews = new ArrayList<Review>();
+        this.transportMeans = transportMeans;
     }
 
     @Override
     public String toString(){
-        double rating = getRating();
-        String ratingMessage = rating == 0 ? "No reviews" : Double.toString(rating);
         return super.toString() + '\n' +
-                "Rating: " + ratingMessage;
+                "Transport means: " + this.transportMeans.toString();
 
     }
 
-    public double getRating(){
-        int s = 0;
-        for (Review r : reviews){
-            s += r.getNumOfStars();
-        }
-        return reviews.size() > 0 ? s * 1.0 / reviews.size() : 0;
+    public List<String> getTransportMeans() {
+        return transportMeans;
     }
 
-    public List<Review> getReviews() {
-        return reviews;
+    public void setTransportMeans(List<String> transportMeans) {
+        this.transportMeans = transportMeans;
     }
 }

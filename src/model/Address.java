@@ -24,42 +24,6 @@ public final class Address {
                 "Additional info: " + additionalInfo;
     }
 
-    public void setFields(Scanner scanner){
-        System.out.println("City: ");
-        this.city = scanner.nextLine();
-        System.out.println("Street: ");
-        this.street = scanner.nextLine();
-        System.out.println("Number: ");
-        this.number = scanner.nextInt();
-        scanner.nextLine();
-        System.out.println("Additional info: ");
-        this.additionalInfo = scanner.nextLine();
-    }
-    
-    public void updateFields(Scanner scanner, String[] fields){
-        for (String field : fields){
-            switch (field.toLowerCase()){
-                case "city":
-                    System.out.println("New city: ");
-                    this.city = scanner.nextLine();
-                    break;
-                case "street":
-                    System.out.println("New street: ");
-                    this.street = scanner.nextLine();
-                    break;
-                case "number":
-                    System.out.println("New number: ");
-                    this.number = scanner.nextInt();
-                    scanner.nextLine();
-                    break;
-                case "additional info":
-                    System.out.println("New additional info: ");
-                    this.additionalInfo = scanner.nextLine();
-                    break;
-            }
-        }
-    }
-
     public String getCity() {
         return city;
     }

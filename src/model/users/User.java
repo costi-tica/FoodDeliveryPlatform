@@ -23,14 +23,6 @@ public abstract class User {
                 "Phone number: " + phoneNumber;
     }
 
-    public void setFields(Scanner scanner){
-        System.out.println("Name: ");
-        this.name = scanner.nextLine();
-
-        System.out.println("Phone number: ");
-        this.phoneNumber = scanner.nextLine();
-    }
-
     public int getId() {
         return id;
     }

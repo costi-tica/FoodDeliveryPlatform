@@ -2,72 +2,33 @@ package service;
 
 import model.*;
 import model.products.*;
-import model.users.Client;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public final class RestaurantService {
     private final Scanner scanner;
 
     public RestaurantService(){
-        scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in);
     }
 
-//  GET
-    public Product getProductById(Restaurant res, int id){
-        HashMap<String,List<Dish>> dishes = res.getMenu().getDishes();
-        for (String categ : dishes.keySet()) for (Dish d : dishes.get(categ))
-            if (d.getId() == id) return d;
-
-        HashMap<String,List<Drink>> drinks = res.getMenu().getDrinks();
-        for (String categ : drinks.keySet()) for (Drink d : drinks.get(categ))
-            if (d.getId() == id) return d;
-
-        return null;
-    }
-    public String getProductCategory(Restaurant res, int id){
-        HashMap<String,List<Dish>> dishes = res.getMenu().getDishes();
-        for (String categ : dishes.keySet()) for (Dish d : dishes.get(categ))
-            if (d.getId() == id) return categ;
-
-        HashMap<String,List<Drink>> drinks = res.getMenu().getDrinks();
-        for (String categ : drinks.keySet()) for (Drink d : drinks.get(categ))
-            if (d.getId() == id) return categ;
-
-        return "";
+//  SET FIELDS
+    public void setFields(Restaurant res){
+        System.out.println("Name: ");
+        res.setName(scanner.nextLine());
     }
 
 //  SHOW
     public void showMenu(Restaurant res){
         System.out.println("MENU: \n\n" + res.getMenu().toString());
     }
-    public void showReviews(Restaurant res) {
-        for (Review r : res.getReviews()){
-            System.out.println(r);
-            System.out.println("________________");
-        }
-    }
 
-//  ADD REVIEW FOR RESTAURANT
-    public void addReview(Restaurant res, Review review){
-        res.getReviews().add(review);
-    }
-    public void addReview(Restaurant res, Client client){
-        Review review = new Review();
-        review.setFields(scanner);
-        review.setClient(client);
-
-        addReview(res, review);
-    }
 //  ADD DISH TO MENU
     public void addDish(Restaurant res, Dish dish, String category){
         res.getMenu().getDishes().get(category).add(dish);
     }
     public void addDish(Restaurant res){
-        HashMap<String, List<Dish>> dishes = res.getMenu().getDishes();
+        Map<String, List<Dish>> dishes = res.getMenu().getDishes();
 
         System.out.println("Denumirea dish-ului: ");
         String name = scanner.nextLine();
@@ -95,7 +56,7 @@ public final class RestaurantService {
         res.getMenu().getDrinks().get(category).add(drink);
     }
     public void addDrink(Restaurant res){
-        HashMap<String, List<Drink>> drinks = res.getMenu().getDrinks();
+        Map<String, List<Drink>> drinks = res.getMenu().getDrinks();
 
         System.out.println("Denumirea bauturii: ");
         String name = scanner.nextLine();
@@ -138,42 +99,8 @@ public final class RestaurantService {
 
         addDrinkCategory(res, category);
     }
-//  ADD ADDRESS
-    public void addAddress(Restaurant res, Address address){
-        res.setAddress(address);
-    }
-    public void addAddress(Restaurant res){
-        Address address = new Address();
-        address.setFields(scanner);
 
-        res.setAddress(address);
-    }
 
-//  EDIT RATING
-    public void editReview(Restaurant res, Client client){
-        List<Review> reviews = res.getReviews();
-        for (Review r : reviews){
-            if (r.getClient().getId() == client.getId()){
-                System.out.println("Your review: \n" + r.toString() + '\n');
-                r.updateFields(scanner);
-                break;
-            }
-        }
-    }
-//  EDIT PRODUCT FROM MENU
-    public void editProduct(Restaurant res, int prodId){
-        Product toEdit = getProductById(res, prodId);
-
-        if (toEdit == null) {
-            System.out.println("Product does not exist.");
-            return;
-        }
-
-        System.out.println("Produsul actual: \n" + toEdit.toString() + '\n');
-        System.out.println("Ce campuri doriti sa modificati? (cu / intre ele)");
-
-        toEdit.updateFields(scanner, scanner.nextLine().split("/"));
-    }
 //  EDIT NAME
     public void editName(Restaurant res, String name){
         res.setName(name);
@@ -182,44 +109,7 @@ public final class RestaurantService {
         System.out.println("Intoduceti noul nume al restaurantului: ");
         res.setName(scanner.nextLine());
     }
-//  EDIT ADDRESS
-    public void editAddress(Restaurant res, Address address){
-        res.setAddress(address);
-    }
-    public void editAddress(Restaurant res){
-        Address address = res.getAddress();
-        System.out.println("Adresa actuala: \n" + address.toString() + '\n');
-        System.out.println("Ce campuri doriti sa modificati? (cu / intre)");
 
-        address.updateFields(scanner, scanner.nextLine().split("/"));
-    }
-
-//  DELETE REVIEW
-    public void deleteReview(Restaurant res, Client client){
-        List<Review> reviews = res.getReviews();
-        Review toDelete = null;
-        for (Review r : reviews){
-            if (r.getClient().getId() == client.getId()){
-                toDelete = r;
-                break;
-            }
-        }
-        if (toDelete != null) {
-            reviews.remove(toDelete);
-        }
-    }
-//  DELETE DISH FROM MENU
-    public void deleteProduct(Restaurant res, int prodId){
-        Product toDelete = getProductById(res, prodId);
-        String category = getProductCategory(res, prodId);
-
-        if (toDelete != null){
-            if (toDelete instanceof Dish)
-                res.getMenu().getDishes().get(category).remove(toDelete);
-            else if (toDelete instanceof Drink)
-                res.getMenu().getDrinks().get(category).remove(toDelete);
-        }
-    }
 //  DELETE FOOD CATEGORY FROM MENU
     public void deleteDishCategory(Restaurant res, String category){
         res.getMenu().getDishes().remove(category.toLowerCase());

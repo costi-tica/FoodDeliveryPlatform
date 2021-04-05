@@ -5,10 +5,11 @@ import model.products.Drink;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class Menu {
-    private HashMap<String, List<Dish>> dishes;
-    private HashMap<String, List<Drink>> drinks;
+    private Map<String, List<Dish>> dishes;
+    private Map<String, List<Drink>> drinks;
 
     public Menu(){
         this.drinks = new HashMap<>();
@@ -43,11 +44,11 @@ public final class Menu {
                 "DRINKS: \n" + drinksToString;
     }
 
-    public HashMap<String, List<Dish>> getDishes() {
+    public Map<String, List<Dish>> getDishes() {
         return dishes;
     }
 
-    public HashMap<String, List<Drink>> getDrinks() {
+    public Map<String, List<Drink>> getDrinks() {
         return drinks;
     }
 }

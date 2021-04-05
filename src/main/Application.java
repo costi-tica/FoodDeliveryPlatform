@@ -6,8 +6,7 @@ import model.Restaurant;
 import model.products.Product;
 import model.users.Client;
 import model.users.Courier;
-import service.RestaurantService;
-import service.UserService;
+import service.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +14,17 @@ import java.util.Scanner;
 
 
 public final class Application {
-   private List<Client> clients;
-   private List<Courier> couriers;
-   private List<Restaurant> restaurants;
-   private List<Order> orders;
+   private final List<Client> clients;
+   private final List<Courier> couriers;
+   private final List<Restaurant> restaurants;
+   private final List<Order> orders;
    private int nextClientId, nextCourierId, nextRestaurantId, nextOrderId;
    RestaurantService restaurantService;
    UserService userService;
+   OrderService orderService;
+   ReviewService reviewService;
+   ProductService productService;
+   AddressService addressService;
 
    public Application(){
       this.clients = new ArrayList<>();
@@ -30,6 +33,10 @@ public final class Application {
       this.orders = new ArrayList<>();
       this.restaurantService = new RestaurantService();
       this.userService = new UserService();
+      this.orderService = new OrderService();
+      this.reviewService = new ReviewService();
+      this.productService = new ProductService();
+      this.addressService = new AddressService();
    }
 
 // ORDER OPTIONS MENU
@@ -139,32 +146,25 @@ public final class Application {
 
 // ADD CLIENT
    public void addClient(){
-      Scanner scanner = new Scanner(System.in);
       Client client = new Client(nextClientId++);
 
-      client.setFields(scanner);
+      userService.setClientFields(client);
+      addressService.addClientAddress(client);
       this.clients.add(client);
    }
 // ADD COURIER
    public void addCourier(){
-      Scanner scanner = new Scanner(System.in);
       Courier courier = new Courier(nextCourierId++);
 
-      courier.setFields(scanner);
+      userService.setCourierFields(courier);
       this.couriers.add(courier);
    }
 // ADD RESTAURANT
    public void addRestaurant(){
-      Scanner scanner = new Scanner(System.in);
+      Restaurant res = new Restaurant(nextRestaurantId++);
 
-      System.out.println("Name: ");
-      String name = scanner.nextLine();
-
-      System.out.println("Address: \n");
-      Address address = new Address();
-      address.setFields(scanner);
-
-      Restaurant res = new Restaurant(nextRestaurantId++, name, address);
+      restaurantService.setFields(res);
+      addressService.addRestaurantAddress(res);
       this.restaurants.add(res);
    }
 // ADD ORDER
@@ -241,11 +241,13 @@ public final class Application {
       System.out.println("Product Ids: ('/' between ids)");
       List<Product> prods = new ArrayList<>();
       for (String id : scanner.nextLine().split("/")){
-         Product prod = restaurantService.getProductById(resFound, Integer.parseInt(id));
+         Product prod = productService.getProductById(resFound, Integer.parseInt(id));
          if (prod != null) prods.add(prod);
       }
 
       Order order = new Order(nextOrderId++, clientFound, resFound, courierFound, prods);
+      orderService.calcTotalPrice(order);
+      orderService.calcEstimatedTime(order);
       this.orders.add(order);
    }
 
@@ -268,7 +270,7 @@ public final class Application {
          switch (option){
             case 1 -> userService.editName(client);
             case 2 -> userService.editPhoneNumber(client);
-            case 3 -> userService.editAddress(client);
+            case 3 -> addressService.editClientAddress(client);
             case 4 -> System.out.println(client);
             case 5 -> {
                return;
@@ -284,39 +286,16 @@ public final class Application {
          System.out.println("""
                  1) Edit name
                  2) Edit phone number
-                 3) Show reviews
-                 4) Add review
-                 5) Edit review
-                 6) Delete review
-                 7) Show info
-                 8) Go back to the main menu
+                 3) Show info
+                 4) Go back to the main menu
                  OPTION:""");
          option = scanner.nextInt();
          scanner.nextLine();
          switch (option){
             case 1 -> userService.editName(courier);
             case 2 -> userService.editPhoneNumber(courier);
-            case 3 -> userService.showReviews(courier);
+            case 3 -> System.out.println(courier);
             case 4 -> {
-               System.out.println("Client name:");
-               Client client = getClientByName(scanner.nextLine());
-               if (client == null) System.out.println("Client does not exist");
-               else                userService.addReview(courier, client);
-            }
-            case 5 -> {
-               System.out.println("Client name:");
-               Client client = getClientByName(scanner.nextLine());
-               if (client == null) System.out.println("Client does not exist");
-               else                userService.editReview(courier, client);
-            }
-            case 6 -> {
-               System.out.println("Client name:");
-               Client client = getClientByName(scanner.nextLine());
-               if (client == null) System.out.println("Client does not exist");
-               else                userService.deleteReview(courier, client);
-            }
-            case 7 -> System.out.println(courier);
-            case 8 -> {
                return;
             }
          }
@@ -354,18 +333,18 @@ public final class Application {
             case 3 -> restaurantService.addDishCategory(res);
             case 4 -> restaurantService.addDrinkCategory(res);
             case 5 -> restaurantService.editName(res);
-            case 6 -> restaurantService.editAddress(res);
+            case 6 -> addressService.editRestaurantAddress(res);
             case 7 -> {
                System.out.println("Product id:");
                int id = scanner.nextInt();
                scanner.nextLine();
-               restaurantService.editProduct(res, id);
+               productService.editProduct(res, id);
             }
             case 8 -> {
                System.out.println("Product id:");
                int id = scanner.nextInt();
                scanner.nextLine();
-               restaurantService.deleteProduct(res, id);
+               productService.deleteProduct(res, id);
             }
             case 9 -> {
                System.out.println("Category name:");
@@ -376,25 +355,25 @@ public final class Application {
                System.out.println("Category name:");
                restaurantService.deleteDrinkCategory(res, scanner.nextLine());
             }
-            case 11 -> restaurantService.showReviews(res);
+            case 11 -> reviewService.showReviews(res);
             case 12 -> {
                System.out.println("Client name:");
                Client client = getClientByName(scanner.nextLine());
                if (client == null) System.out.println("Client does not exist");
-               else                restaurantService.editReview(res, client);
+               else                reviewService.editReview(res, client);
             }
             case 13 -> {
                System.out.println("Client name:");
                Client client = getClientByName(scanner.nextLine());
                if (client == null) System.out.println("Client does not exist");
-               else                restaurantService.deleteReview(res, client);
+               else                reviewService.deleteReview(res, client);
             }
             case 14 -> restaurantService.showMenu(res);
             case 15 -> {
                System.out.println("Client name:");
                Client client = getClientByName(scanner.nextLine());
                if (client == null) System.out.println("Client does not exist");
-               else                restaurantService.addReview(res, client);
+               else                reviewService.addReview(res, client);
             }
             case 16 -> System.out.println(res);
             case 17 -> {

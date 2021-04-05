@@ -12,10 +12,8 @@ public final class Restaurant {
     private int nextProdId;
 
     public Restaurant() { this.id = -1; }
-    public Restaurant(int id, String name, Address address){
+    public Restaurant(int id){
         this.id = id;
-        this.name = name;
-        this.address = address;
         this.menu = new Menu();
         this.reviews = new ArrayList<>();
     }

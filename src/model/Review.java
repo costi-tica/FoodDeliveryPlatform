@@ -25,23 +25,8 @@ public final class Review {
     public String toString(){
         return "Stars: " + numOfStars + '\n' +
                 "Message: " + message + '\n' +
-                "Client: " + client.getName();
-    }
-
-    public void setFields(Scanner scanner){
-        System.out.println("Number of stars: ");
-        this.numOfStars = scanner.nextInt();
-        scanner.nextLine();
-        System.out.println("Message: ");
-        this.message = scanner.nextLine();
-    }
-
-    public void updateFields(Scanner scanner){
-        System.out.println("New number of stars: ");
-        this.numOfStars = scanner.nextInt();
-        scanner.nextLine();
-        System.out.println("New message: ");
-        this.message = scanner.nextLine();
+                "Client: " + client.getName() + '\n' +
+                "Date: " + date.toString();
     }
 
     public int getNumOfStars() {

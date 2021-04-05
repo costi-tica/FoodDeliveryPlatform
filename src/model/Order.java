@@ -4,6 +4,7 @@ import model.products.Product;
 import model.users.Client;
 import model.users.Courier;
 
+import java.util.Date;
 import java.util.List;
 
 public final class Order {
@@ -12,8 +13,9 @@ public final class Order {
     private final Restaurant restaurant;
     private final Courier courier;
     private List<Product> products;
-    private final double totalPrice;
-    private final int estimatedTime; //minutes
+    private double totalPrice;
+    private final Date date;
+    private int estimatedTime; //minutes
 
     public Order(int id, Client client, Restaurant restaurant, Courier courier, List<Product> products) {
         this.id = id;
@@ -21,8 +23,7 @@ public final class Order {
         this.restaurant = restaurant;
         this.client = client;
         this.products = products;
-        this.totalPrice = calcPrice();
-        this.estimatedTime = calcEstimatedTime();
+        this.date = new Date();
     }
 
     @Override
@@ -35,15 +36,39 @@ public final class Order {
                 "Estimated time: " + estimatedTime;
     }
 
-    public double calcPrice(){
-        double sum = 0;
-        for (Product prod : products){
-            sum += prod.getPrice();
-        }
-        return sum;
+    public Client getClient() {
+        return client;
     }
 
-    public int calcEstimatedTime(){
-        return 0;
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public Courier getCourier() {
+        return courier;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getEstimatedTime() {
+        return estimatedTime;
+    }
+
+    public void setEstimatedTime(int estimatedTime) {
+        this.estimatedTime = estimatedTime;
     }
 }

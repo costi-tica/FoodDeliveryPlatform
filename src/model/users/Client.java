@@ -17,11 +17,9 @@ public class Client extends User{
     }
 
     @Override
-    public void setFields(Scanner scanner){
-        super.setFields(scanner);
-        System.out.println("Address:\n");
-        this.address = new Address();
-        address.setFields(scanner);
+    public String toString(){
+        return super.toString() + '\n' +
+                "Address: \n" + this.address.toString();
     }
 
     public Address getAddress() {

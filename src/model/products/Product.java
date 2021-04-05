@@ -25,26 +25,6 @@ public abstract class Product {
                 "Quantity: " + quantity + " " + unit;
     }
 
-    public void updateFields(Scanner scanner, String[] fields){
-        for (String field : fields){
-            switch (field.toLowerCase()) {
-                case "name" -> {
-                    System.out.println("New name: ");
-                    this.name = scanner.nextLine();
-                }
-                case "price" -> {
-                    System.out.println("New price: ");
-                    this.price = scanner.nextDouble();
-                }
-                case "quantity" -> {
-                    System.out.println("New quantity/serving: ");
-                    this.quantity = scanner.nextInt();
-                    scanner.nextLine();
-                }
-            }
-        }
-    }
-
     public int getId(){
         return id;
     }
