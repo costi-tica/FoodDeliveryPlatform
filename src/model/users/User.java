@@ -1,26 +1,20 @@
 package model.users;
 
-import java.util.Scanner;
-
 public abstract class User {
     protected int id;
     protected String name;
     protected String phoneNumber;
 
     public User(){}
-    public User(int id){
-        this.id = id;
-    }
-    public User(int id, String name, String phoneNumber) {
-        this.id = id;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-    }
 
     @Override
     public String toString(){
         return "Name: " + name + '\n' +
                 "Phone number: " + phoneNumber;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {

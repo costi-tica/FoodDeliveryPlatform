@@ -4,25 +4,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Restaurant {
-    private final int id;
+    private int id;
     private String name;
     private Address address;
     private Menu menu;
     private List<Review> reviews;
     private int nextProdId;
 
-    public Restaurant() { this.id = -1; }
-    public Restaurant(int id){
-        this.id = id;
-        this.menu = new Menu();
-        this.reviews = new ArrayList<>();
-    }
-    public Restaurant(int id, String name, Address address, List<Review> reviews, Menu menu) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.reviews = reviews;
-        this.menu = menu;
+    public Restaurant() {}
+
+    public static class Builder {
+        private final Restaurant res = new Restaurant();
+
+        public Builder withId(int id){
+            res.setId(id);
+            return this;
+        }
+        public Builder withName(String name){
+            res.setName(name);
+            return this;
+        }
+        public Builder withAddress(Address address){
+            res.setAddress(address);
+            return this;
+        }
+        public Builder withReviews(List<Review> reviews){
+            res.setReviews(reviews);
+            return this;
+        }
+        public Builder withNoReviews() {
+            res.setReviews(new ArrayList<>());
+            return this;
+        }
+        public Builder withMenu(Menu menu){
+            res.setMenu(menu);
+            return this;
+        }
+        public Builder withEmptyMenu(){
+            res.setMenu(new Menu());
+            return this;
+        }
+        public Restaurant build(){
+            return res;
+        }
     }
 
     public int getNextProdId() {
@@ -40,11 +64,26 @@ public final class Restaurant {
     }
 
     public double getRating(){
-        int s = 0;
-        for (Review r : reviews){
-            s += r.getNumOfStars();
-        }
-        return reviews.size() > 0 ? s * 1.0 / reviews.size() : 0;
+        return reviews.stream()
+                .mapToInt(review -> review.getNumOfStars())
+                .average()
+                .getAsDouble();
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

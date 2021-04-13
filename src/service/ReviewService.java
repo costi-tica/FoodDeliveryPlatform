@@ -4,10 +4,9 @@ import model.Restaurant;
 import model.Review;
 import model.users.Client;
 
-import java.util.List;
 import java.util.Scanner;
 
-public class ReviewService {
+public final class ReviewService {
     private final Scanner scanner;
 
     public ReviewService() {
@@ -16,29 +15,24 @@ public class ReviewService {
 
 //  GET RESTAURANT REVIEW BY CLIENT
     public Review getReviewByClient(Restaurant res, Client client){
-        for (Review r : res.getReviews()){
-            if (r.getClient().getId() == client.getId()){
-                return r;
-            }
-        }
-        return null;
+        return res.getReviews()
+                .stream()
+                .filter(review -> review.getClient().getId() == client.getId())
+                .findFirst().orElse(null);
     }
 
 //  SHOW REVIEWS
     public void showReviews(Restaurant res) {
-        for (Review r : res.getReviews()){
-            System.out.println(r);
+        res.getReviews().forEach(review -> {
+            System.out.println(review);
             System.out.println("________________");
-        }
+        });
     }
 
 //  SET FIELDS (SCANNER)
-    public void setFields(Review review){
-        System.out.println("Number of stars: ");
-        review.setNumOfStars(scanner.nextInt());
-        scanner.nextLine();
-        System.out.println("Message: ");
-        review.setMessage(scanner.nextLine());
+    public String getReviewScannerData(){
+        System.out.println("number of stars/message");
+        return scanner.nextLine();
     }
 //  UPDATE FIELDS (SCANNER)
     public void updateFields(Review review){
@@ -54,9 +48,16 @@ public class ReviewService {
         res.getReviews().add(review);
     }
     public void addReview(Restaurant res, Client client){
-        Review review = new Review();
-        setFields(review);
-        review.setClient(client);
+        String[] reviewData = getReviewScannerData().split("/");
+        int numOfStars = Integer.parseInt(reviewData[0]);
+        String message = reviewData[1];
+
+        Review review = new Review.Builder()
+                .withNumOfStars(numOfStars)
+                .withMessage(message)
+                .withClient(client)
+                .withCurrentDate()
+                .build();
 
         addReview(res, review);
     }

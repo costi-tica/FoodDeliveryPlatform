@@ -2,14 +2,44 @@ package model.products;
 
 
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class Dish extends Product {
     private String[] ingredients;
 
-    public Dish(int id, String name, double price, int quantity, String[] ingredients) {
-        super(id, name, price, quantity, "g");
-        this.ingredients = ingredients;
+    public Dish(){
+        super();
+    }
+
+    public static class Builder{
+        private final Dish dish = new Dish();
+
+        public Builder withId(int id){
+            dish.setId(id);
+            return this;
+        }
+        public Builder withName(String name){
+            dish.setName(name);
+            return this;
+        }
+        public Builder withPrice(double price){
+            dish.setPrice(price);
+            return this;
+        }
+        public Builder withQuantity(int quantity){
+            dish.setQuantity(quantity);
+            return this;
+        }
+        public Builder withIngredients(String[] ingredients){
+            dish.setIngredients(ingredients);
+            return this;
+        }
+        public Builder withGramsAsUnit(){
+            dish.setUnit("g");
+            return this;
+        }
+        public Dish build(){
+            return this.dish;
+        }
     }
 
     @Override

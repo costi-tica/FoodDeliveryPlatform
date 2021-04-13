@@ -8,16 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 public final class Menu {
-    private Map<String, List<Dish>> dishes;
-    private Map<String, List<Drink>> drinks;
+    private final Map<String, List<Dish>> dishes;
+    private final Map<String, List<Drink>> drinks;
 
     public Menu(){
         this.drinks = new HashMap<>();
         this.dishes = new HashMap<>();
-    }
-    public Menu(HashMap<String, List<Dish>> dishes, HashMap<String, List<Drink>> drinks) {
-        this.dishes = new HashMap<>(dishes);
-        this.drinks = new HashMap<>(drinks);
     }
 
     @Override

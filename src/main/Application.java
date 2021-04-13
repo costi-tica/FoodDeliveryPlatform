@@ -9,6 +9,7 @@ import model.users.Courier;
 import service.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,6 +40,48 @@ public final class Application {
       this.addressService = new AddressService();
    }
 
+// MENU
+   public void menu(){
+      Scanner scanner = new Scanner(System.in);
+
+      int option;
+      while (true){
+         System.out.println("""
+                Choose:\s
+                1) Add new client
+                2) Add new courier
+                3) Add new restaurant
+                4) Create new order
+                5) Show all clients
+                6) Show all couriers
+                7) Show all restaurants
+                8) Show all orders
+                9) Search for a client
+                10) Search for a courier
+                11) Search for a restaurant
+                12) Exit
+                OPTION:""");
+
+         option = scanner.nextInt();
+         scanner.nextLine();
+
+         switch (option) {
+            case 1 -> addClient();
+            case 2 -> addCourier();
+            case 3 -> addRestaurant();
+            case 4 -> addOrder();
+            case 5 -> showClients();
+            case 6 -> showCouriers();
+            case 7 -> showRestaurants();
+            case 8 -> showOrders();
+            case 9 -> searchFor(new Client());
+            case 10 -> searchFor(new Courier());
+            case 11 -> searchFor(new Restaurant());
+            case 12 -> System.exit(0);
+         }
+      }
+   }
+
 // ORDER OPTIONS MENU
    private void orderOptionsMenu(String forName){
       System.out.println(forName + " does not exist. Choose:");
@@ -50,54 +93,45 @@ public final class Application {
 
 // GET
    public Restaurant getRestaurantByName(String name){
-      for (Restaurant r : restaurants){
-         if (r.getName().equalsIgnoreCase(name)){
-            return r;
-         }
-      }
-      return null;
+      return restaurants.stream()
+              .filter(res -> res.getName().equalsIgnoreCase(name))
+              .findFirst().orElse(null);
    }
    public Client getClientByName(String name){
-      for (Client c : clients){
-         if (c.getName().equalsIgnoreCase(name)){
-            return c;
-         }
-      }
-      return null;
+      return clients.stream()
+              .filter(client -> client.getName().equalsIgnoreCase(name))
+              .findFirst().orElse(null);
    }
    public Courier getCourierByName(String name){
-      for (Courier c : couriers){
-         if (c.getName().equalsIgnoreCase(name)){
-            return c;
-         }
-      }
-      return null;
+      return couriers.stream()
+              .filter(couriers -> couriers.getName().equalsIgnoreCase(name))
+              .findFirst().orElse(null);
    }
 
 // SHOW
    public void showClients(){
-      for (Client c : clients){
-         System.out.println(c);
+      clients.forEach(client -> {
+         System.out.println(client);
          System.out.println("_____________________");
-      }
+      });
    }
    public void showCouriers(){
-      for (Courier c : couriers){
-         System.out.println(c);
+      couriers.forEach(courier -> {
+         System.out.println(courier);
          System.out.println("_____________________");
-      }
+      });
    }
    public void showRestaurants(){
-      for (Restaurant r : restaurants){
-         System.out.println(r);
-         System.out.println("_____________________");
-      }
+      restaurants.forEach(res -> {
+         System.out.println(res);
+         System.out.println("___________________");
+      });
    }
    public void showOrders(){
-      for(Order o : orders){
-         System.out.println(o);
+      orders.forEach(order -> {
+         System.out.println(order);
          System.out.println("_____________________");
-      }
+      });
    }
 
 // SEARCH
@@ -146,25 +180,50 @@ public final class Application {
 
 // ADD CLIENT
    public void addClient(){
-      Client client = new Client(nextClientId++);
+      String[] clientData = userService.getClientScannerData().split("/");
+      String name = clientData[0];
+      String phoneNumber = clientData[1];
+      Address address = addressService.createNewAddress(AddressService.CreationPath.USER_INPUT);
 
-      userService.setClientFields(client);
-      addressService.addClientAddress(client);
+      Client client = new Client.Builder()
+              .withId(nextClientId++)
+              .withName(name)
+              .withPhoneNumber(phoneNumber)
+              .withAddress(address)
+              .build();
+
       this.clients.add(client);
    }
 // ADD COURIER
    public void addCourier(){
-      Courier courier = new Courier(nextCourierId++);
+      String[] courierData = userService.getCourierScannerData().split("/");
+      String name = courierData[0];
+      String phoneNumber = courierData[1];
+      List<String> transportMeans = Arrays.asList(courierData[2].split(","));
 
-      userService.setCourierFields(courier);
+      Courier courier = new Courier.Builder()
+              .withId(nextCourierId++)
+              .withName(name)
+              .withPhoneNumber(phoneNumber)
+              .withTransportMeans(transportMeans)
+              .build();
+
       this.couriers.add(courier);
    }
 // ADD RESTAURANT
    public void addRestaurant(){
-      Restaurant res = new Restaurant(nextRestaurantId++);
+      String[] restaurantData = restaurantService.getRestaurantScannerData().split("/");
+      String name = restaurantData[0];
+      Address address = addressService.createNewAddress(AddressService.CreationPath.USER_INPUT);
 
-      restaurantService.setFields(res);
-      addressService.addRestaurantAddress(res);
+      Restaurant res = new Restaurant.Builder()
+              .withId(nextRestaurantId++)
+              .withName(name)
+              .withEmptyMenu()
+              .withNoReviews()
+              .withAddress(address)
+              .build();
+
       this.restaurants.add(res);
    }
 // ADD ORDER
@@ -173,7 +232,6 @@ public final class Application {
 
       Client clientFound = null;
       int option = 1;
-      String clientName;
       while (clientFound == null) {
          switch (option){
             case 1:
@@ -196,7 +254,6 @@ public final class Application {
 
       Restaurant resFound = null;
       option = 1;
-      String resName;
       while (resFound == null) {
          switch (option){
             case 1:
@@ -218,7 +275,6 @@ public final class Application {
 
       Courier courierFound = null;
       option = 1;
-      String courierName;
       while (courierFound == null) {
          switch (option){
             case 1:

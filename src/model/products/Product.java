@@ -1,7 +1,5 @@
 package model.products;
 
-import java.util.Scanner;
-
 public abstract class Product {
     protected int id;
     protected String name;
@@ -9,13 +7,7 @@ public abstract class Product {
     protected int quantity;
     protected String unit;
 
-    public Product(int id, String name, double price, int quantity, String unit) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.unit = unit;
-    }
+    public Product(){}
 
     @Override
     public String toString() {

@@ -3,22 +3,39 @@ package model;
 import model.users.Client;
 
 import java.util.Date;
-import java.util.Scanner;
 
 public final class Review {
     private int numOfStars;
     private String message;
     private Client client;
-    private final Date date;
+    private Date date;
 
     public Review(){
         this.date = new Date();
     }
-    public Review(int numOfStars, String message, Client client) {
-        this.numOfStars = numOfStars;
-        this.message = message;
-        this.client = client;
-        this.date = new Date();
+
+    public static class Builder{
+        private final Review review = new Review();
+
+        public Builder withNumOfStars(int numOfStars){
+            review.setNumOfStars(numOfStars);
+            return this;
+        }
+        public Builder withMessage(String message){
+            review.setMessage(message);
+            return this;
+        }
+        public Builder withClient(Client client){
+            review.setClient(client);
+            return this;
+        }
+        public Builder withCurrentDate(){
+            review.setDate(new Date());
+            return this;
+        }
+        public Review build(){
+            return review;
+        }
     }
 
     @Override
@@ -27,6 +44,10 @@ public final class Review {
                 "Message: " + message + '\n' +
                 "Client: " + client.getName() + '\n' +
                 "Date: " + date.toString();
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public int getNumOfStars() {

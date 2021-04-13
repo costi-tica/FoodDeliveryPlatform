@@ -1,19 +1,35 @@
 package model;
 
-import java.util.Scanner;
-
 public final class Address {
     private String city;
     private String street;
     private int number;
     private String additionalInfo;
 
-    public Address(){}
-    public Address(String city, String street, int number, String additionalInfo) {
-        this.city = city;
-        this.street = street;
-        this.number = number;
-        this.additionalInfo = additionalInfo;
+    public Address() {}
+
+    public static class Builder{
+        private final Address address = new Address();
+
+        public Builder withCity(String city){
+            address.setCity(city);
+            return this;
+        }
+        public Builder withStreet(String street){
+            address.setStreet(street);
+            return this;
+        }
+        public Builder withNumber(int number){
+            address.setNumber(number);
+            return this;
+        }
+        public Builder withAdditionalInfo(String info){
+            address.setAdditionalInfo(info);
+            return this;
+        }
+        public Address build(){
+            return address;
+        }
     }
 
     @Override

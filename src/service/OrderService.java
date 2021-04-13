@@ -1,18 +1,17 @@
 package service;
 
 import model.Order;
-import model.products.Product;
 
-public class OrderService {
+public final class OrderService {
     public OrderService() {}
 
 //  CALC TOTAL PRICE
     public void calcTotalPrice(Order order){
-        double sum = 0;
-        for (Product prod : order.getProducts()){
-            sum += prod.getPrice();
-        }
-        order.setTotalPrice(sum);
+        double totalPrice = order.getProducts()
+                .stream()
+                .mapToDouble(prod -> prod.getPrice())
+                .sum();
+        order.setTotalPrice(totalPrice);
     }
 
 //  CALC ESTIMATED DELIVERY TIME

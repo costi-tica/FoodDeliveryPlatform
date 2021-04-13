@@ -4,25 +4,44 @@ import model.Address;
 import model.Restaurant;
 import model.users.Client;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
-public class AddressService {
+public final class AddressService {
+    public enum CreationPath {
+        USER_INPUT,
+        CVS_FILE,
+        DATABASE
+    }
     private final Scanner scanner;
 
     public AddressService(){
         scanner = new Scanner(System.in);
     }
 
-    public void setFields(Address address){
-        System.out.println("Address:\nCity: ");
-        address.setCity(scanner.nextLine());
-        System.out.println("Street: ");
-        address.setStreet(scanner.nextLine());
-        System.out.println("Number: ");
-        address.setNumber(scanner.nextInt());
-        scanner.nextLine();
-        System.out.println("Additional info: ");
-        address.setAdditionalInfo(scanner.nextLine());
+    public Address createNewAddress(CreationPath path){
+        String[] addressData;
+        switch (path){
+            case USER_INPUT -> {
+                System.out.println("ccity/street/number/additional info");
+                addressData = scanner.nextLine().split("/");
+            }
+//            case CVS_FILE -> {
+//                addressData = "///".split("/");
+//            }
+            default -> {
+                System.out.println("city/street/number/additional info");
+                addressData = scanner.nextLine().split("/");
+            }
+        }
+
+        return new Address.Builder()
+                .withCity(addressData[0])
+                .withStreet(addressData[1])
+                .withNumber(Integer.parseInt(addressData[2]))
+                .withAdditionalInfo(addressData[3])
+                .build();
     }
     public void updateFields(Address address, String[] fields){
         for (String field : fields){
@@ -53,20 +72,14 @@ public class AddressService {
         client.setAddress(address);
     }
     public void addClientAddress(Client client){
-        Address address = new Address();
-        setFields(address);
-
-        client.setAddress(address);
+        client.setAddress(createNewAddress(CreationPath.USER_INPUT));
     }
 //  ADD ADDRESS (RESTAURANT)
     public void addRestaurantAddress(Restaurant res, Address address){
         res.setAddress(address);
     }
     public void addRestaurantAddress(Restaurant res){
-        Address address = new Address();
-        setFields(address);
-
-        res.setAddress(address);
+        res.setAddress(createNewAddress(CreationPath.USER_INPUT));
     }
 
 //  EDIT ADDRESS (CLIENT)
@@ -85,4 +98,6 @@ public class AddressService {
 
         updateFields(address, scanner.nextLine().split("/"));
     }
+
+
 }

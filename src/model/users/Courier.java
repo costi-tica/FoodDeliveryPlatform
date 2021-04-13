@@ -1,20 +1,34 @@
 package model.users;
 
-import model.Review;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Courier extends User{
     private List<String> transportMeans;
 
     public Courier(){}
-    public Courier(int id){
-        super(id);
-    }
-    public Courier(int id, String name, String phoneNumber, List<String> transportMeans) {
-        super(id, name, phoneNumber);
-        this.transportMeans = transportMeans;
+
+    public static class Builder{
+        private final Courier courier = new Courier();
+
+        public Builder withId(int id){
+            courier.setId(id);
+            return this;
+        }
+        public Builder withName(String name){
+            courier.setName(name);
+            return this;
+        }
+        public Builder withPhoneNumber(String phoneNumber){
+            courier.setPhoneNumber(phoneNumber);
+            return this;
+        }
+        public Builder withTransportMeans(List<String> transportMeans){
+            courier.setTransportMeans(transportMeans);
+            return this;
+        }
+        public Courier build(){
+            return this.courier;
+        }
     }
 
     @Override

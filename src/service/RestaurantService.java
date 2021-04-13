@@ -12,10 +12,10 @@ public final class RestaurantService {
         this.scanner = new Scanner(System.in);
     }
 
-//  SET FIELDS
-    public void setFields(Restaurant res){
-        System.out.println("Name: ");
-        res.setName(scanner.nextLine());
+//  GET RESTAURANT SCANNER DATA
+    public String getRestaurantScannerData(){
+        System.out.println("restaurant name:");
+        return scanner.nextLine();
     }
 
 //  SHOW
@@ -48,7 +48,16 @@ public final class RestaurantService {
         System.out.println("Ingrediente: (pe o linie cu / intre ingrediente) ");
         String[] ingredients = scanner.nextLine().split("/");
 
-        Dish dish = new Dish(res.getNextProdId(), name, price, quantity, ingredients);
+
+        Dish dish = new Dish.Builder()
+                .withId(res.getNextProdId())
+                .withName(name)
+                .withPrice(price)
+                .withQuantity(quantity)
+                .withIngredients(ingredients)
+                .withGramsAsUnit()
+                .build();
+
         addDish(res, dish, category);
     }
 //  ADD DRINK TO MENU
@@ -74,7 +83,14 @@ public final class RestaurantService {
         int quantity = scanner.nextInt();
         scanner.nextLine();
 
-        Drink drink = new Drink(res.getNextProdId(),name, price, quantity);
+        Drink drink = new Drink.Builder()
+                .withId(res.getNextProdId())
+                .withName(name)
+                .withPrice(price)
+                .withQuantity(quantity)
+                .withMillilitersAsUnit()
+                .build();
+
         addDrink(res, drink, category);
     }
 //  ADD FOOD CATEGORY TO MENU

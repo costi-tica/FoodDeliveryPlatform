@@ -2,18 +2,33 @@ package model.users;
 
 import model.Address;
 
-import java.util.Scanner;
-
 public class Client extends User{
     private Address address;
 
     public Client(){}
-    public Client(int id){
-        super(id);
-    }
-    public Client(int id, String name, String phoneNumber, Address address) {
-        super(id, name, phoneNumber);
-        this.address = address;
+
+    public static class Builder{
+        private final Client client = new Client();
+
+        public Builder withId(int id){
+            client.setId(id);
+            return this;
+        }
+        public Builder withName(String name){
+            client.setName(name);
+            return this;
+        }
+        public Builder withPhoneNumber(String phoneNumber){
+            client.setPhoneNumber(phoneNumber);
+            return this;
+        }
+        public Builder withAddress(Address address){
+            client.setAddress(address);
+            return this;
+        }
+        public Client build(){
+            return this.client;
+        }
     }
 
     @Override
