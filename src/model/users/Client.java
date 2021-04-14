@@ -2,32 +2,24 @@ package model.users;
 
 import model.Address;
 
-public class Client extends User{
+public final class Client extends User{
     private Address address;
 
     public Client(){}
 
-    public static class Builder{
-        private final Client client = new Client();
+    public static class Builder extends User.Builder<Client, Builder>{
+        public Builder(){
+            super(new Client());
+        }
 
-        public Builder withId(int id){
-            client.setId(id);
+        @Override
+        protected Builder getThis(){
             return this;
         }
-        public Builder withName(String name){
-            client.setName(name);
-            return this;
-        }
-        public Builder withPhoneNumber(String phoneNumber){
-            client.setPhoneNumber(phoneNumber);
-            return this;
-        }
+
         public Builder withAddress(Address address){
-            client.setAddress(address);
+            this.user.setAddress(address);
             return this;
-        }
-        public Client build(){
-            return this.client;
         }
     }
 

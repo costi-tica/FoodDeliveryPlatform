@@ -11,17 +11,22 @@ public final class Order {
     private final int id;
     private final Client client;
     private final Restaurant restaurant;
-    private final Courier courier;
+    private Courier courier;
     private List<Product> products;
     private double totalPrice;
     private final Date date;
-    private int estimatedTime; //minutes
+    private Status status = Status.PLACED;
 
-    public Order(int id, Client client, Restaurant restaurant, Courier courier, List<Product> products) {
+    public enum Status {
+        PLACED,
+        SHIPPING,
+        COMPLETED
+    }
+
+    public Order(int id, Client client, Restaurant restaurant, List<Product> products) {
         this.id = id;
-        this.courier = courier;
-        this.restaurant = restaurant;
         this.client = client;
+        this.restaurant = restaurant;
         this.products = products;
         this.date = new Date();
     }
@@ -31,9 +36,8 @@ public final class Order {
         return "Order Id: " + id + '\n'+
                 "Client: " + client.toString() + "\n\n" +
                 "Restaurant: " + restaurant.toString() + "\n\n"+
-                "Courier: " + courier.toString() + "\n\n" +
-                "Total price: " + totalPrice + '\n' +
-                "Estimated time: " + estimatedTime;
+                "Total price: " + totalPrice + '\n'+
+                "Status: " + status;
     }
 
     public Client getClient() {
@@ -64,11 +68,19 @@ public final class Order {
         this.totalPrice = totalPrice;
     }
 
-    public int getEstimatedTime() {
-        return estimatedTime;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setEstimatedTime(int estimatedTime) {
-        this.estimatedTime = estimatedTime;
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setCourier(Courier courier) {
+        this.courier = courier;
     }
 }

@@ -2,6 +2,8 @@ package service;
 
 import model.Order;
 
+import java.util.List;
+
 public final class OrderService {
     public OrderService() {}
 
@@ -12,10 +14,5 @@ public final class OrderService {
                 .mapToDouble(prod -> prod.getPrice())
                 .sum();
         order.setTotalPrice(totalPrice);
-    }
-
-//  CALC ESTIMATED DELIVERY TIME
-    public void calcEstimatedTime(Order order){
-        order.setEstimatedTime(0); // for now
     }
 }

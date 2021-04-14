@@ -67,7 +67,7 @@ public final class Restaurant {
         return reviews.stream()
                 .mapToInt(review -> review.getNumOfStars())
                 .average()
-                .getAsDouble();
+                .orElse(0.0);
     }
 
     public void setReviews(List<Review> reviews) {
