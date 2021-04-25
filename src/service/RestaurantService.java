@@ -17,6 +17,12 @@ public final class RestaurantService {
         System.out.println("restaurant name:");
         return scanner.nextLine();
     }
+    public Restaurant getRestaurantById(List<Restaurant> restaurants, int id){
+        return restaurants.stream()
+                .filter(res -> res.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
 
 //  SHOW
     public void showMenu(Restaurant res){

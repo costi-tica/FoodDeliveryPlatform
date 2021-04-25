@@ -51,6 +51,13 @@ public final class UserService {
         return userData;
     }
 
+//  GET
+    public User getUserById(List<User> users, int id) {
+        return users.stream()
+                .filter(user -> user.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
 //  EDIT NAME
     public void editName(User user, String name){
         user.setName(name);

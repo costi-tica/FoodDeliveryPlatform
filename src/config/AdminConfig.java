@@ -1,26 +1,33 @@
 package config;
 
-import main.Application;
+import main.application.AppData;
 import model.users.AppAdmin;
 import model.users.User;
 
-import java.util.List;
-
-public final class adminConfig {
+public final class AdminConfig {
     private static final String adminName = "Costi Tica";
     private static final String adminPhoneNumber = "0784633333";
     private static final String adminEmail = "admin@gmail.com";
     private static final String adminPassword = "Admin1!";
 
-    public static void config(List<User> users) {
-        AppAdmin admin = (AppAdmin) users.stream()
+    private static AdminConfig INSTANCE;
+
+    private AdminConfig() {}
+
+    public static AdminConfig getInstance() {
+        if (INSTANCE == null) INSTANCE = new AdminConfig();
+        return INSTANCE;
+    }
+
+    public void config(AppData appData) {
+        AppAdmin admin = (AppAdmin) appData.getUsers().stream()
                 .filter(user -> user.getRole() == User.Role.APP_ADMIN && user.getEmail().equals(adminEmail))
                 .findFirst().orElse(null);
 
         if (admin != null) return;
 
         admin = new AppAdmin.Builder()
-                .withId(Application.getNextUserId())
+                .withId(appData.getNextUserId())
                 .withName(adminName)
                 .withPhoneNumber(adminPhoneNumber)
                 .withEmail(adminEmail)
@@ -28,6 +35,6 @@ public final class adminConfig {
                 .withRole(User.Role.APP_ADMIN)
                 .withRank(AppAdmin.Rank.GENERAL)
                 .build();
-        users.add(admin);
+        appData.addUser(admin);
     }
 }

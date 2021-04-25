@@ -4,37 +4,20 @@ import model.Address;
 import model.Restaurant;
 import model.users.Client;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public final class AddressService {
-    public enum CreationPath {
-        USER_INPUT,
-        CVS_FILE,
-        DATABASE
-    }
     private final Scanner scanner;
 
     public AddressService(){
         scanner = new Scanner(System.in);
     }
 
-    public Address createNewAddress(CreationPath path){
+    public Address createNewAddress(){
         String[] addressData;
-        switch (path){
-            case USER_INPUT -> {
-                System.out.println("ccity/street/number/additional info");
-                addressData = scanner.nextLine().split("/");
-            }
-//            case CVS_FILE -> {
-//                addressData = "///".split("/");
-//            }
-            default -> {
-                System.out.println("city/street/number/additional info");
-                addressData = scanner.nextLine().split("/");
-            }
-        }
+
+        System.out.println("ccity/street/number/additional info");
+        addressData = scanner.nextLine().split("/");
 
         return new Address.Builder()
                 .withCity(addressData[0])
@@ -72,14 +55,14 @@ public final class AddressService {
         client.setAddress(address);
     }
     public void addClientAddress(Client client){
-        client.setAddress(createNewAddress(CreationPath.USER_INPUT));
+        client.setAddress(createNewAddress());
     }
 //  ADD ADDRESS (RESTAURANT)
     public void addRestaurantAddress(Restaurant res, Address address){
         res.setAddress(address);
     }
     public void addRestaurantAddress(Restaurant res){
-        res.setAddress(createNewAddress(CreationPath.USER_INPUT));
+        res.setAddress(createNewAddress());
     }
 
 //  EDIT ADDRESS (CLIENT)

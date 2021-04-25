@@ -1,8 +1,8 @@
 package service;
 
 import model.Order;
+import model.products.Product;
 
-import java.util.List;
 
 public final class OrderService {
     public OrderService() {}
@@ -11,7 +11,7 @@ public final class OrderService {
     public void calcTotalPrice(Order order){
         double totalPrice = order.getProducts()
                 .stream()
-                .mapToDouble(prod -> prod.getPrice())
+                .mapToDouble(Product::getPrice)
                 .sum();
         order.setTotalPrice(totalPrice);
     }
