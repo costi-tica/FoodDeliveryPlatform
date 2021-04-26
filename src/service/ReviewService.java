@@ -3,6 +3,7 @@ package service;
 import model.Restaurant;
 import model.Review;
 import model.users.Client;
+import service.ReadWriteServices.RWReviewService;
 
 import java.util.Scanner;
 
@@ -47,7 +48,7 @@ public final class ReviewService {
     public void addReview(Restaurant res, Review review){
         res.getReviews().add(review);
     }
-    public void addReview(Restaurant res, Client client){
+    public void newReview(Restaurant res, Client client){
         String[] reviewData = getReviewScannerData().split("/");
         int numOfStars = Integer.parseInt(reviewData[0]);
         String message = reviewData[1];
@@ -60,6 +61,7 @@ public final class ReviewService {
                 .build();
 
         addReview(res, review);
+        RWReviewService.getInstance().write(new RestaurantService().getRestaurantOwner(res), review);
     }
 
 //  EDIT RESTAURANT REVIEW

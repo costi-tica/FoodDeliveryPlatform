@@ -1,7 +1,11 @@
 package service;
 
+import main.app.AppData;
 import model.*;
 import model.products.*;
+import model.users.ResOwner;
+import model.users.User;
+import service.ReadWriteServices.RWProductService;
 
 import java.util.*;
 
@@ -17,9 +21,19 @@ public final class RestaurantService {
         System.out.println("restaurant name:");
         return scanner.nextLine();
     }
-    public Restaurant getRestaurantById(List<Restaurant> restaurants, int id){
-        return restaurants.stream()
+    public Restaurant getRestaurantById(int id){
+        return AppData.getInstance()
+                .getRestaurants()
+                .stream()
                 .filter(res -> res.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+    public ResOwner getRestaurantOwner(Restaurant res){
+        return (ResOwner) AppData.getInstance()
+                .getUsers()
+                .stream()
+                .filter(user -> user instanceof ResOwner && ((ResOwner) user).getOwnedRestaurant().equals(res))
                 .findFirst()
                 .orElse(null);
     }
@@ -31,9 +45,13 @@ public final class RestaurantService {
 
 //  ADD DISH TO MENU
     public void addDish(Restaurant res, Dish dish, String category){
-        res.getMenu().getDishes().get(category).add(dish);
+        Map<String, List<Dish>> dishes = res.getMenu().getDishes();
+        if (!dishes.containsKey(category)) {
+            addDishCategory(res, category);
+        }
+        dishes.get(category).add(dish);
     }
-    public void addDish(Restaurant res){
+    public void newDish(Restaurant res){
         Map<String, List<Dish>> dishes = res.getMenu().getDishes();
 
         System.out.println("Denumirea dish-ului: ");
@@ -41,10 +59,6 @@ public final class RestaurantService {
         System.out.println("Categoria din care face parte: ");
         System.out.println("Optiuni: " + dishes.keySet() + " sau tasteaza nume_categorie_noua");
         String category = scanner.nextLine();
-
-        if (!dishes.containsKey(category)) {
-            addDishCategory(res, category);
-        }
 
         System.out.println("Pretul: ");
         double price = scanner.nextDouble();
@@ -65,12 +79,17 @@ public final class RestaurantService {
                 .build();
 
         addDish(res, dish, category);
+        RWProductService.getInstance().write(getRestaurantOwner(res), dish, category); //
     }
 //  ADD DRINK TO MENU
     public void addDrink(Restaurant res, Drink drink, String category){
-        res.getMenu().getDrinks().get(category).add(drink);
+        Map<String, List<Drink>> drinks = res.getMenu().getDrinks();
+        if (!drinks.containsKey(category)){
+            addDrinkCategory(res, category);
+        }
+        drinks.get(category).add(drink);
     }
-    public void addDrink(Restaurant res){
+    public void newDrink(Restaurant res){
         Map<String, List<Drink>> drinks = res.getMenu().getDrinks();
 
         System.out.println("Denumirea bauturii: ");
@@ -78,10 +97,6 @@ public final class RestaurantService {
         System.out.println("Categoria din care face parte: ");
         System.out.println("Optiuni: " + drinks.keySet() + " sau tasteaza nume_categorie_noua");
         String category = scanner.nextLine();
-
-        if (!drinks.containsKey(category)){
-            addDrinkCategory(res, category);
-        }
 
         System.out.println("Pretul: ");
         double price = scanner.nextDouble();
@@ -98,6 +113,7 @@ public final class RestaurantService {
                 .build();
 
         addDrink(res, drink, category);
+        RWProductService.getInstance().write(getRestaurantOwner(res), drink, category);
     }
 //  ADD FOOD CATEGORY TO MENU
     public void addDishCategory(Restaurant res, String category){

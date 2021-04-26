@@ -1,7 +1,6 @@
 package main;
 
-
-import main.application.Application;
+import main.app.Application;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,3 +8,4 @@ public class Main {
         app.start();
     }
 }
+

@@ -58,6 +58,12 @@ public final class UserService {
                 .findFirst()
                 .orElse(null);
     }
+    public User getUserByEmail(List<User> users, String email) {
+        return users.stream()
+                .filter(user -> user.getEmail() != null && user.getEmail().equals(email))
+                .findFirst()
+                .orElse(null);
+    }
 //  EDIT NAME
     public void editName(User user, String name){
         user.setName(name);

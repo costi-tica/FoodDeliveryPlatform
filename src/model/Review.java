@@ -33,6 +33,10 @@ public final class Review {
             review.setDate(new Date());
             return this;
         }
+        public Builder withDate(Date date){
+            review.setDate(date);
+            return this;
+        }
         public Review build(){
             return review;
         }
@@ -49,6 +53,8 @@ public final class Review {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public Date getDate() { return date; }
 
     public int getNumOfStars() {
         return numOfStars;

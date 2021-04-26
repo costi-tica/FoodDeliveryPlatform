@@ -1,13 +1,14 @@
-package main.application;
+package main.app;
 
 import model.*;
 import model.products.Product;
 import model.users.*;
 import service.*;
+import service.ReadWriteServices.*;
 
 import java.util.*;
 
-public class AppManagement {
+public final class AppManagement {
     AppData appData;
     RestaurantService restaurantService;
     UserService userService;
@@ -15,16 +16,40 @@ public class AppManagement {
     ReviewService reviewService;
     ProductService productService;
     AddressService addressService;
+    RWUserService rwUserService;
+    RWRestaurantService rwRestaurantService;
+    RWProductService rwProductService;
+    RWReviewService rwReviewService;
+
     Scanner scanner = new Scanner(System.in);
 
-    public AppManagement(AppData appData) {
-        this.appData = appData;
+    public AppManagement() {
+        this.appData = AppData.getInstance();
         this.restaurantService = new RestaurantService();
         this.userService = new UserService();
         this.orderService = new OrderService();
         this.reviewService = new ReviewService();
         this.productService = new ProductService();
         this.addressService = new AddressService();
+        this.rwUserService = RWUserService.getInstance();
+        this.rwRestaurantService = RWRestaurantService.getInstance();
+        this.rwProductService = RWProductService.getInstance();
+        this.rwReviewService = RWReviewService.getInstance();
+    }
+
+    // READ FILE DATA
+    public void readFileData() {
+        if (appData.dataLoaded) return;
+
+        rwUserService.read(appData);
+        System.out.println(1);
+        rwRestaurantService.read(appData);
+        System.out.println(2);
+        rwProductService.read(appData);
+        System.out.println(3);
+        rwReviewService.read(appData);
+        System.out.println(4);
+        appData.dataLoaded = true;
     }
 
     // GET
@@ -81,7 +106,7 @@ public class AppManagement {
     }
 
 
-    //SEARCH
+    // SEARCH
     public void searchRestaurant(User userLoggedIn){
         System.out.println("Restaurant name:");
         Restaurant res = getRestaurantByName(scanner.nextLine());
@@ -100,8 +125,9 @@ public class AppManagement {
                  4) Edit your review
                  5) Delete your review
                  6) Show info
-                 7) Go back
-                 8) Exit
+                 7) View reviews
+                 8) Go back
+                 9) Exit
                  OPTION:""");
             option = scanner.nextInt();
             scanner.nextLine();
@@ -116,7 +142,7 @@ public class AppManagement {
                         break;
                     }
 
-                    reviewService.addReview(res, (Client) userLoggedIn);
+                    reviewService.newReview(res, (Client) userLoggedIn);
                 }
                 case 4 -> {
                     Review review = reviewService.getReviewByClient(res, (Client) userLoggedIn);
@@ -128,14 +154,15 @@ public class AppManagement {
                 }
                 case 5 -> reviewService.deleteReview(res, (Client) userLoggedIn);
                 case 6 -> System.out.println(res);
-                case 7 -> { return; }
-                case 8 -> System.exit(0);
+                case 7 -> res.getReviews().forEach(System.out::println);
+                case 8 -> { return; }
+                case 9 -> System.exit(0);
             }
         }
     }
 
     // ADD CLIENT
-    public void addClient(){
+    public void newClient(){
         Map<String, String> clientData = userService.getUserScannerData();
 
         Address address = addressService.createNewAddress();
@@ -151,9 +178,10 @@ public class AppManagement {
                 .build();
 
         appData.addUser(client);
+        rwUserService.write(client);
     }
     // ADD COURIER
-    public void addCourier(){
+    public void newCourier(){
         Map<String, String> courierData = userService.getUserScannerData();
 
         Courier courier = new Courier.Builder()
@@ -166,9 +194,10 @@ public class AppManagement {
                 .build();
 
         appData.addUser(courier);
+        rwUserService.write(courier);
     }
     // ADD RESTAURANT OWNER
-    public void addResOwner(){
+    public void newResOwner(){
         Map<String, String> ownerData = userService.getUserScannerData();
 
         ResOwner owner = new ResOwner.Builder()
@@ -181,9 +210,10 @@ public class AppManagement {
                 .build();
 
         appData.addUser(owner);
+        rwUserService.write(owner);
     }
     // ADD RESTAURANT
-    public void addRestaurant(User userLoggedIn){
+    public void newRestaurant(User userLoggedIn){
         if (((ResOwner) userLoggedIn).getOwnedRestaurant() != null){
             System.out.println("You already have a restaurant.\n");
             return;
@@ -203,6 +233,7 @@ public class AppManagement {
 
         ((ResOwner) userLoggedIn).setOwnedRestaurant(res);
         appData.addRestaurant(res);
+        rwRestaurantService.write(res, (ResOwner) userLoggedIn);
     }
     // ADD ORDER
     public void placeOrder(Restaurant res, User userLoggedIn){
@@ -308,8 +339,8 @@ public class AppManagement {
             option = scanner.nextInt();
             scanner.nextLine();
             switch (option) {
-                case 1 -> restaurantService.addDish(res);
-                case 2 -> restaurantService.addDrink(res);
+                case 1 -> restaurantService.newDish(res);
+                case 2 -> restaurantService.newDrink(res);
                 case 3 -> restaurantService.addDishCategory(res);
                 case 4 -> restaurantService.addDrinkCategory(res);
                 case 5 -> restaurantService.editName(res);
@@ -354,7 +385,7 @@ public class AppManagement {
     }
     public void deleteRestaurant() {
         System.out.println("Restaurant Id:");
-        Restaurant res = restaurantService.getRestaurantById(appData.restaurants, scanner.nextInt());
+        Restaurant res = restaurantService.getRestaurantById(scanner.nextInt());
         scanner.nextLine();
         if (res != null) appData.restaurants.remove(res);
     }

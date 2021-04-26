@@ -16,14 +16,13 @@ public final class AddressService {
     public Address createNewAddress(){
         String[] addressData;
 
-        System.out.println("ccity/street/number/additional info");
+        System.out.println("city/street/number");
         addressData = scanner.nextLine().split("/");
 
         return new Address.Builder()
                 .withCity(addressData[0])
                 .withStreet(addressData[1])
                 .withNumber(Integer.parseInt(addressData[2]))
-                .withAdditionalInfo(addressData[3])
                 .build();
     }
     public void updateFields(Address address, String[] fields){
@@ -41,10 +40,6 @@ public final class AddressService {
                     System.out.println("New number: ");
                     address.setNumber(scanner.nextInt());
                     scanner.nextLine();
-                }
-                case "additional info" -> {
-                    System.out.println("New additional info: ");
-                    address.setAdditionalInfo(scanner.nextLine());
                 }
             }
         }

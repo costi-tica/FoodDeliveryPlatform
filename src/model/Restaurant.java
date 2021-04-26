@@ -65,7 +65,7 @@ public final class Restaurant {
 
     public double getRating(){
         return reviews.stream()
-                .mapToInt(review -> review.getNumOfStars())
+                .mapToInt(Review::getNumOfStars)
                 .average()
                 .orElse(0.0);
     }

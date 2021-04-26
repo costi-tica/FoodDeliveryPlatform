@@ -1,5 +1,8 @@
 COURIER,George Bodea,0784665353,george@gmail.com,parola
-CLIENT,Iustinian Andronie,0763545545,iusti@gmail.com,parola,Mangalia,Perilor,23,langa posta
-CLIENT,Dobrescu Adi, 04676434663,adi@gmail.com,parola,Craiova,Prunilor,2,no
-CLIENT,Gimmy Macesanu, 05636346346,gimi@gmail.com,parola,Craiova,Brancusi,3,zona izvorul rece
-RES_OWNER,Raul Ionescu, 06353453564,raul@gmail.com,parola
+CLIENT,Iustinian Andronie,0763545545,iusti@gmail.com,parola,Mangalia,Perilor,23
+CLIENT,Dobrescu Adi,04676434663,adi@gmail.com,parola,Craiova,Prunilor,2
+CLIENT,Gimmy Macesanu,05636346346,gimi@gmail.com,parola,Craiova,Brancusi,3
+COURIER,Raul Ionescu,06353453564,raul@gmail.com,parola
+RES_OWNER,Catalin Scarlatescu,07524545463,scarla@gmail.com,parola
+RES_OWNER,Florin Dumitrescu,07524546547,dumi@gmail.com,parola
+RES_OWNER,Sorin Bontea,07524565564,bontea@gmail.com,parola

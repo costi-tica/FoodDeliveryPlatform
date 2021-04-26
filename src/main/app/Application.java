@@ -1,4 +1,4 @@
-package main.application;
+package main.app;
 
 import config.AppConfig;
 import model.*;
@@ -18,9 +18,9 @@ public final class Application {
    private static Application INSTANCE;
 
    private Application(){
-      this.appData = new AppData();
-      this.appManagement = new AppManagement(appData);
-      this.appConfig = new AppConfig(appData);
+      this.appData = AppData.getInstance();
+      this.appManagement = new AppManagement();
+      this.appConfig = new AppConfig();
    }
 
    public static Application getInstance() {
@@ -28,15 +28,12 @@ public final class Application {
       return INSTANCE;
    }
 
-// START
+   // START
    public void start() {
-      appConfig();
-      menu();
-   }
-// CONFIG
-   private void appConfig(){
       appConfig.configAdmins();
-      appConfig.configFileData();
+      appManagement.readFileData();
+
+      menu();
    }
 
    // REGISTER
@@ -52,9 +49,9 @@ public final class Application {
       option = scanner.nextInt();
       scanner.nextLine();
       switch (option){
-         case 1 -> appManagement.addClient();
-         case 2 -> appManagement.addCourier();
-         case 3 -> appManagement.addResOwner();
+         case 1 -> appManagement.newClient();
+         case 2 -> appManagement.newCourier();
+         case 3 -> appManagement.newResOwner();
          case 4 -> System.exit(0);
       }
    }
@@ -90,7 +87,7 @@ public final class Application {
          case 3 -> System.exit(0);
       }
    }
-   //  LOGOUT
+   // LOGOUT
    private void logout(User user){
       user.setLoggedIn(false);
       userLoggedIn = null;
@@ -255,7 +252,7 @@ public final class Application {
          if (userLoggedIn == null) menu();
 
          switch (option) {
-            case 1 -> appManagement.addRestaurant(userLoggedIn);
+            case 1 -> appManagement.newRestaurant(userLoggedIn);
             case 2 -> {
                if (((ResOwner) userLoggedIn).getOwnedRestaurant() == null){
                   System.out.println("You do not have a restaurant yet.\n");

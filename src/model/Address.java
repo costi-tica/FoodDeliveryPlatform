@@ -4,7 +4,6 @@ public final class Address {
     private String city;
     private String street;
     private int number;
-    private String additionalInfo;
 
     public Address() {}
 
@@ -23,10 +22,6 @@ public final class Address {
             address.setNumber(number);
             return this;
         }
-        public Builder withAdditionalInfo(String info){
-            address.setAdditionalInfo(info);
-            return this;
-        }
         public Address build(){
             return address;
         }
@@ -36,8 +31,7 @@ public final class Address {
     public String toString() {
         return "City: " + city + "\n" +
                 "Street: " + street + "\n" +
-                "Number: " + Integer.toString(number) + '\n' +
-                "Additional info: " + additionalInfo;
+                "Number: " + Integer.toString(number);
     }
 
     public String getCity() {
@@ -62,14 +56,6 @@ public final class Address {
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    public String getAdditionalInfo() {
-        return additionalInfo;
-    }
-
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
     }
 
 }

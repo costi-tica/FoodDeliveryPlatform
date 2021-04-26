@@ -1,18 +1,19 @@
 package service.ReadWriteServices;
 
 import model.Address;
-import main.application.AppData;
+import main.app.AppData;
+import model.Order;
 import model.users.Client;
 import model.users.Courier;
 import model.users.ResOwner;
 import model.users.User;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.*;
 
-public class RWUserService implements ReadWriteService{
-    private static final String DIRECTORY_PATH = "resources/app_data/";
+public final class RWUserService extends ReadWriteService{
     private static final String FILE_PATH = DIRECTORY_PATH + "users.csv";
     private static RWUserService INSTANCE;
 
@@ -27,15 +28,16 @@ public class RWUserService implements ReadWriteService{
 
     public void read(AppData appData) {
         try {
-            checkDirectoryAndFileExist(DIRECTORY_PATH, FILE_PATH);
+            checkIfDirectoryAndFileExist(FILE_PATH);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         try {
             BufferedReader reader = Files.newBufferedReader(Paths.get(FILE_PATH));
-            String line = "";
+            String line;
+            String[] userData;
             while ((line = reader.readLine()) != null) {
-                String[] userData = line.split(",");
+                userData = line.split(",");
                 String name = userData[1],
                         phoneNumber = userData[2],
                         email = userData[3],
@@ -43,15 +45,13 @@ public class RWUserService implements ReadWriteService{
                 switch (User.Role.valueOf(userData[0])) {
                     case CLIENT -> {
                         String city = userData[5],
-                                street = userData[6],
-                                info = userData[8].equals("no") ? "" : userData[8];
+                                street = userData[6];
                         int number = Integer.parseInt(userData[7]);
 
                         Address address = new Address.Builder()
                                 .withCity(city)
                                 .withStreet(street)
                                 .withNumber(number)
-                                .withAdditionalInfo(info)
                                 .build();
 
                         Client client = new Client.Builder()
@@ -94,7 +94,30 @@ public class RWUserService implements ReadWriteService{
         }
     }
 
-    public void write(AppData appData) {
-        //...
+    public void write(User user) {
+        try {
+            checkIfDirectoryAndFileExist(FILE_PATH);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(FILE_PATH), StandardOpenOption.APPEND);
+            writer.newLine();
+            writer.write(user.getRole() + "," +
+                    user.getName() + "," +
+                    user.getPhoneNumber() + "," +
+                    user.getEmail() + "," +
+                    user.getPassword());
+            if (user instanceof Client){
+                Address address = ((Client) user).getAddress();
+                String addressToString = address.getCity() + "," +
+                        address.getStreet() + "," +
+                        address.getNumber();
+                writer.write("," + addressToString);
+            }
+            writer.flush();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

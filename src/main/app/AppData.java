@@ -1,4 +1,4 @@
-package main.application;
+package main.app;
 
 import model.Order;
 import model.Restaurant;
@@ -7,21 +7,36 @@ import model.users.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppData {
+public final class AppData {
     List<User> users;
     List<Restaurant> restaurants;
     List<Order> orders;
+    boolean dataLoaded;
+
+    private static AppData INSTANCE;
 
     private static int nextUserId, nextRestaurantId, nextOrderId;
 
-    public AppData() {
+    private AppData() {
         this.users = new ArrayList<>();
         this.restaurants = new ArrayList<>();
         this.orders = new ArrayList<>();
+        this.dataLoaded = false;
+    }
+
+    public static AppData getInstance() {
+        if (INSTANCE == null) INSTANCE = new AppData();
+        return INSTANCE;
     }
 
     public List<User> getUsers() {
         return users;
+    }
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+    public List<Order> getOrders() {
+        return orders;
     }
 
     public void addUser(User user) {
