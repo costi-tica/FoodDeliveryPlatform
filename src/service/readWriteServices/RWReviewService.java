@@ -1,6 +1,6 @@
-package service.ReadWriteServices;
+package service.readWriteServices;
 
-import main.app.AppData;
+import app_core.AppData;
 import model.Review;
 import model.users.Client;
 import model.users.ResOwner;
@@ -74,12 +74,12 @@ public final class RWReviewService extends ReadWriteService{
         }
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(FILE_PATH), StandardOpenOption.APPEND);
-            writer.newLine();
             writer.write(review.getClient().getEmail() + "," +
                     resOwner.getEmail() + "," +
                     review.getNumOfStars() + "," +
                     review.getMessage() + "," +
                     new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(review.getDate()));
+            writer.newLine();
             writer.flush();
         } catch (IOException e) {
             System.out.println(e.getMessage());

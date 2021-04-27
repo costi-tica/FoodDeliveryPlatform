@@ -1,6 +1,6 @@
 package config;
 
-import main.app.AppData;
+import app_core.AppData;
 import model.users.AppAdmin;
 import model.users.User;
 

@@ -1,6 +1,6 @@
 package config;
 
-import main.app.AppData;
+import app_core.AppData;
 
 public class AppConfig {
     private final AppData appData;

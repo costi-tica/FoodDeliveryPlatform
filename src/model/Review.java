@@ -2,6 +2,7 @@ package model;
 
 import model.users.Client;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public final class Review {
@@ -47,7 +48,7 @@ public final class Review {
         return "Stars: " + numOfStars + '\n' +
                 "Message: " + message + '\n' +
                 "Client: " + client.getName() + '\n' +
-                "Date: " + date.toString();
+                "Date: " + new Timestamp(date.getTime());
     }
 
     public void setDate(Date date) {

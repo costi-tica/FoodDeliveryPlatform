@@ -1,9 +1,8 @@
-package service.ReadWriteServices;
+package service.readWriteServices;
 
-import main.app.AppData;
+import app_core.AppData;
 import model.Address;
 import model.Restaurant;
-import model.users.Client;
 import model.users.ResOwner;
 import service.UserService;
 
@@ -82,12 +81,12 @@ public final class RWRestaurantService extends ReadWriteService{
 
             Address address = res.getAddress();
 
-            writer.newLine();
             writer.write(res.getName() + "," +
                     address.getCity() + "," +
                     address.getStreet() + "," +
                     address.getNumber() + "," +
                     owner.getEmail());
+            writer.newLine();
             writer.flush();
         } catch (IOException e) {
             System.out.println(e.getMessage());

@@ -1,8 +1,7 @@
-package service.ReadWriteServices;
+package service.readWriteServices;
 
 import model.Address;
-import main.app.AppData;
-import model.Order;
+import app_core.AppData;
 import model.users.Client;
 import model.users.Courier;
 import model.users.ResOwner;
@@ -102,7 +101,6 @@ public final class RWUserService extends ReadWriteService{
         }
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(FILE_PATH), StandardOpenOption.APPEND);
-            writer.newLine();
             writer.write(user.getRole() + "," +
                     user.getName() + "," +
                     user.getPhoneNumber() + "," +
@@ -115,6 +113,7 @@ public final class RWUserService extends ReadWriteService{
                         address.getNumber();
                 writer.write("," + addressToString);
             }
+            writer.newLine();
             writer.flush();
         } catch (IOException e) {
             System.out.println(e.getMessage());

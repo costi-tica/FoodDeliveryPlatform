@@ -1,4 +1,4 @@
-package main.app;
+package app_core;
 
 import config.AppConfig;
 import model.*;
@@ -53,6 +53,7 @@ public final class Application {
          case 2 -> appManagement.newCourier();
          case 3 -> appManagement.newResOwner();
          case 4 -> System.exit(0);
+         default -> System.out.println("Invalid command.");
       }
    }
    // LOGIN
@@ -140,7 +141,7 @@ public final class Application {
                 Choose:\s
                 1) Place order
                 2) View all restaurants
-                3) Search for a restaurant
+                3) Select a restaurant
                 4) View your orders
                 5) Edit your account
                 6) Edit your address
@@ -155,7 +156,7 @@ public final class Application {
          switch (option) {
             case 1 -> appManagement.placeOrder(userLoggedIn);
             case 2 -> appManagement.showRestaurants();
-            case 3 -> appManagement.searchRestaurant(userLoggedIn);
+            case 3 -> appManagement.selectRestaurant(userLoggedIn);
             case 4 -> appData.orders.stream()
                     .filter(ord -> ord.getClient().getId() == userLoggedIn.getId())
                     .forEach(ord -> {
@@ -204,12 +205,12 @@ public final class Application {
                   break;
                }
                order.setCourier((Courier)userLoggedIn);
-               order.setStatus(Order.Status.SHIPPING);
+               order.setStatus(Order.Status.ON_DELIVERY);
                ((Courier) userLoggedIn).setBusy(true);
             }
             case 2 -> {
                Order order = appData.orders.stream()
-                       .filter(ord -> ord.getCourier() != null && ord.getCourier().getId() == userLoggedIn.getId() && ord.getStatus() == Order.Status.SHIPPING)
+                       .filter(ord -> ord.getCourier() != null && ord.getCourier().getId() == userLoggedIn.getId() && ord.getStatus() == Order.Status.ON_DELIVERY)
                        .findFirst()
                        .orElse(null);
                if (order == null){

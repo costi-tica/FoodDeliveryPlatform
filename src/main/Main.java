@@ -1,6 +1,6 @@
 package main;
 
-import main.app.Application;
+import app_core.Application;
 
 public class Main {
     public static void main(String[] args) {

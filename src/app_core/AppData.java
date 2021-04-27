@@ -1,4 +1,4 @@
-package main.app;
+package app_core;
 
 import model.Order;
 import model.Restaurant;

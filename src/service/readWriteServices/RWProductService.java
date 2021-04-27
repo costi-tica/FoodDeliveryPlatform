@@ -1,14 +1,11 @@
-package service.ReadWriteServices;
+package service.readWriteServices;
 
-import main.app.AppData;
-import model.Address;
+import app_core.AppData;
 import model.Restaurant;
 import model.products.Dish;
 import model.products.Drink;
 import model.products.Product;
-import model.users.Client;
 import model.users.ResOwner;
-import service.ProductService;
 import service.RestaurantService;
 import service.UserService;
 
@@ -92,7 +89,6 @@ public final class RWProductService extends ReadWriteService{
         }
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(FILE_PATH), StandardOpenOption.APPEND);
-            writer.newLine();
             writer.write(resOwner.getEmail() + "," +
                     (product instanceof Drink ? "drink" : "dish") + "," +
                     product.getName() + "," +
@@ -102,6 +98,7 @@ public final class RWProductService extends ReadWriteService{
             if (product instanceof Dish){
                 writer.write("," + String.join("/", ((Dish) product).getIngredients()));
             }
+            writer.newLine();
             writer.flush();
         } catch (IOException e) {
             System.out.println(e.getMessage());

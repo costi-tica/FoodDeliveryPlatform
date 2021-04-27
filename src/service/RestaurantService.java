@@ -1,11 +1,10 @@
 package service;
 
-import main.app.AppData;
+import app_core.AppData;
 import model.*;
 import model.products.*;
 import model.users.ResOwner;
-import model.users.User;
-import service.ReadWriteServices.RWProductService;
+import service.readWriteServices.RWProductService;
 
 import java.util.*;
 

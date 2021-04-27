@@ -19,7 +19,7 @@ public final class Order {
 
     public enum Status {
         PLACED,
-        SHIPPING,
+        ON_DELIVERY,
         COMPLETED
     }
 

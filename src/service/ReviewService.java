@@ -3,7 +3,7 @@ package service;
 import model.Restaurant;
 import model.Review;
 import model.users.Client;
-import service.ReadWriteServices.RWReviewService;
+import service.readWriteServices.RWReviewService;
 
 import java.util.Scanner;
 

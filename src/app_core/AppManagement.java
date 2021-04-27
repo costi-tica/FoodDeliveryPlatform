@@ -1,10 +1,10 @@
-package main.app;
+package app_core;
 
 import model.*;
 import model.products.Product;
 import model.users.*;
 import service.*;
-import service.ReadWriteServices.*;
+import service.readWriteServices.*;
 
 import java.util.*;
 
@@ -16,10 +16,13 @@ public final class AppManagement {
     ReviewService reviewService;
     ProductService productService;
     AddressService addressService;
+
     RWUserService rwUserService;
     RWRestaurantService rwRestaurantService;
     RWProductService rwProductService;
     RWReviewService rwReviewService;
+
+    LoggingService loggingService;
 
     Scanner scanner = new Scanner(System.in);
 
@@ -35,6 +38,7 @@ public final class AppManagement {
         this.rwRestaurantService = RWRestaurantService.getInstance();
         this.rwProductService = RWProductService.getInstance();
         this.rwReviewService = RWReviewService.getInstance();
+        this.loggingService = LoggingService.getInstance();
     }
 
     // READ FILE DATA
@@ -42,13 +46,9 @@ public final class AppManagement {
         if (appData.dataLoaded) return;
 
         rwUserService.read(appData);
-        System.out.println(1);
         rwRestaurantService.read(appData);
-        System.out.println(2);
         rwProductService.read(appData);
-        System.out.println(3);
         rwReviewService.read(appData);
-        System.out.println(4);
         appData.dataLoaded = true;
     }
 
@@ -105,9 +105,8 @@ public final class AppManagement {
         });
     }
 
-
-    // SEARCH
-    public void searchRestaurant(User userLoggedIn){
+    // SELECT RESTAURANT
+    public void selectRestaurant(User userLoggedIn){
         System.out.println("Restaurant name:");
         Restaurant res = getRestaurantByName(scanner.nextLine());
         if (res == null){
@@ -179,6 +178,7 @@ public final class AppManagement {
 
         appData.addUser(client);
         rwUserService.write(client);
+        loggingService.logAction("newClient");
     }
     // ADD COURIER
     public void newCourier(){
@@ -195,6 +195,7 @@ public final class AppManagement {
 
         appData.addUser(courier);
         rwUserService.write(courier);
+        loggingService.logAction("newCourier");
     }
     // ADD RESTAURANT OWNER
     public void newResOwner(){
@@ -211,6 +212,7 @@ public final class AppManagement {
 
         appData.addUser(owner);
         rwUserService.write(owner);
+        loggingService.logAction("newRestaurantOwner");
     }
     // ADD RESTAURANT
     public void newRestaurant(User userLoggedIn){
@@ -234,6 +236,7 @@ public final class AppManagement {
         ((ResOwner) userLoggedIn).setOwnedRestaurant(res);
         appData.addRestaurant(res);
         rwRestaurantService.write(res, (ResOwner) userLoggedIn);
+        loggingService.logAction("newRestaurant");
     }
     // ADD ORDER
     public void placeOrder(Restaurant res, User userLoggedIn){
@@ -247,6 +250,7 @@ public final class AppManagement {
         Order order = new Order(appData.getNextOrderId(), (Client) userLoggedIn, res, prods);
         orderService.calcTotalPrice(order);
         appData.addOrder(order);
+        loggingService.logAction("newOrder");
     }
     public void placeOrder(User userLoggedIn) {
         int option;
@@ -285,6 +289,7 @@ public final class AppManagement {
         Order order = new Order(appData.getNextOrderId(), (Client) userLoggedIn, resFound, prods);
         orderService.calcTotalPrice(order);
         appData.addOrder(order);
+        loggingService.logAction("newOrder");
     }
 
     // EDIT USER ACCOUNT
