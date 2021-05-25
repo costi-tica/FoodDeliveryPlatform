@@ -106,10 +106,7 @@ public final class Application {
         int option;
         System.out.println("""
               1) REGISTER
-              2) LOGIN (nefunctional, (in caz ca nu ati vazut deja mesajul)
-              aplicatia este prea complexa si nu am avut timp sa implementez db pentru tot, 
-              insa nici pe bucati nu a mers deoarece pica tot ca la domino)
-              Aplicatia are +35 actiuni si 17 tabele in db... 
+              2) LOGIN (nefunctional)
               3) EXIT
               OPTION:""");
         option = scanner.nextInt();
