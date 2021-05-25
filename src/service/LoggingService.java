@@ -8,7 +8,7 @@ import java.nio.file.StandardOpenOption;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class LoggingService{
+public final class LoggingService{
     private static final String DIRECTORY_PATH = "resources/logging/";
     private static final String LOG_ACTION_FILE_PATH = DIRECTORY_PATH + "actionLog.csv";
     private static LoggingService INSTANCE;

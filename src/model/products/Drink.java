@@ -1,6 +1,6 @@
 package model.products;
 
-public class Drink extends Product {
+public final class Drink extends Product {
     public Drink(){}
 
     public static class Builder{

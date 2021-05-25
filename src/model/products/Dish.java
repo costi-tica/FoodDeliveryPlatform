@@ -3,7 +3,7 @@ package model.products;
 
 import java.util.Arrays;
 
-public class Dish extends Product {
+public final class Dish extends Product {
     private String[] ingredients;
 
     public Dish(){

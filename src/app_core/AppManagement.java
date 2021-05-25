@@ -3,6 +3,7 @@ package app_core;
 import model.*;
 import model.products.Product;
 import model.users.*;
+import repository.UserRepository;
 import service.*;
 import service.readWriteServices.*;
 
@@ -22,6 +23,8 @@ public final class AppManagement {
     RWProductService rwProductService;
     RWReviewService rwReviewService;
 
+    UserRepository userRepository;
+
     LoggingService loggingService;
 
     Scanner scanner = new Scanner(System.in);
@@ -34,11 +37,14 @@ public final class AppManagement {
         this.reviewService = new ReviewService();
         this.productService = new ProductService();
         this.addressService = new AddressService();
+
         this.rwUserService = RWUserService.getInstance();
         this.rwRestaurantService = RWRestaurantService.getInstance();
         this.rwProductService = RWProductService.getInstance();
         this.rwReviewService = RWReviewService.getInstance();
         this.loggingService = LoggingService.getInstance();
+
+        this.userRepository = new UserRepository();
     }
 
     // READ FILE DATA
@@ -160,6 +166,13 @@ public final class AppManagement {
         }
     }
 
+    public long login(String email, String password) {
+        return userRepository.login(email, password);
+    }
+    public User.Role getRole(long userId) {
+        return userRepository.getRole(userId);
+    }
+
     // ADD CLIENT
     public void newClient(){
         Map<String, String> clientData = userService.getUserScannerData();
@@ -176,8 +189,10 @@ public final class AppManagement {
                 .withRole(User.Role.CLIENT)
                 .build();
 
-        appData.addUser(client);
-        rwUserService.write(client);
+//        appData.addUser(client);
+//        rwUserService.write(client);
+        userRepository.addNewClient(client);
+
         loggingService.logAction("newClient");
     }
     // ADD COURIER
@@ -193,8 +208,11 @@ public final class AppManagement {
                 .withRole(User.Role.COURIER)
                 .build();
 
-        appData.addUser(courier);
-        rwUserService.write(courier);
+//        appData.addUser(courier);
+//        rwUserService.write(courier);
+
+        userRepository.addNewCourier(courier);
+
         loggingService.logAction("newCourier");
     }
     // ADD RESTAURANT OWNER
@@ -210,8 +228,11 @@ public final class AppManagement {
                 .withRole(User.Role.RES_OWNER)
                 .build();
 
-        appData.addUser(owner);
-        rwUserService.write(owner);
+//        appData.addUser(owner);
+//        rwUserService.write(owner);
+
+        userRepository.addNewResOwner(owner);
+
         loggingService.logAction("newRestaurantOwner");
     }
     // ADD RESTAURANT
@@ -238,6 +259,8 @@ public final class AppManagement {
         rwRestaurantService.write(res, (ResOwner) userLoggedIn);
         loggingService.logAction("newRestaurant");
     }
+
+
     // ADD ORDER
     public void placeOrder(Restaurant res, User userLoggedIn){
         System.out.println("Product Ids: (ex: '3/6/7')");
